@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 
 /**
- * Copyright 2009-2012. NxSystems Inc.
- * PROPRIETARY/CONFIDENTIAL.
- * <p/>
  * Created: 23.01.15 12:01
  *
  * @author Vitaliy Mayorov

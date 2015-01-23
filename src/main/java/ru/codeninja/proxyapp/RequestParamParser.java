@@ -1,7 +1,6 @@
 package ru.codeninja.proxyapp;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created: 23.01.15 11:33

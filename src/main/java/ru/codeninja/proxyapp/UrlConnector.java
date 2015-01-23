@@ -16,7 +16,7 @@ public class UrlConnector {
     public static final String HTTP_HEADER_USER_AGENT = "User-Agent";
     public static final String USER_AGENT = "Mozilla/5.0";
 
-    public static String[] acceptedHeaders = {"Accept-Language", "Accept"};
+    public static String[] acceptedHeaders = {"Accept-Language", "Accept", "Accept-Encoding"};
 
     public HttpURLConnection openGetConnection(String url, HttpServletRequest request) {
         HttpURLConnection conn = null;
@@ -27,7 +27,6 @@ public class UrlConnector {
 
             conn.setRequestMethod(GET_METHOD);
             conn.setRequestProperty(HTTP_HEADER_USER_AGENT, USER_AGENT);
-            conn.setRequestProperty("Accept-Encoding", "deflate");
 
             for (String headerName : acceptedHeaders) {
                 String value = request.getHeader(headerName);

@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.util.logging.Logger;
 
 /**
  * Created: 22.01.15 20:47
@@ -15,15 +16,19 @@ import java.net.HttpURLConnection;
  * @author Vitaliy Mayorov
  */
 public class ProxyServlet extends HttpServlet {
+    private final Logger l = Logger.getLogger(this.getClass().getName());
 
-    public static final int READ_BUFFER_SIZE = 1024;
     private UrlConnector urlConnector;
+    private RequestParamParser requestParamParser;
+    private HeaderMapper headerMapper;
 
     @Override
     public void init() throws ServletException {
         super.init();
 
         urlConnector = new UrlConnector();
+        requestParamParser = new RequestParamParser();
+        headerMapper = new HeaderMapper();
     }
 
     @Override
@@ -33,23 +38,15 @@ public class ProxyServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpURLConnection connection = urlConnector.openGetConnection(req.getRequestURL().toString());
+        String url = requestParamParser.getUrl(req);
+        HttpURLConnection connection = urlConnector.openGetConnection(url, req);
         if (connection == null) {
             //todo implement an error page
         } else {
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            headerMapper.setHeaders(resp, connection);
 
-            char[] buff = new char[READ_BUFFER_SIZE];
-            int count;
-            while ((count = in.read(buff)) != -1) {
-                resp.getWriter().write(buff, 0, count);
-            }
-
-            resp.setContentType(connection.getContentType());
-            resp.setCharacterEncoding(connection.getContentEncoding());
-            resp.setStatus(connection.getResponseCode());
-
-            in.close();
+            ResponseWriter responseWriter = new BinaryResponseWriter();
+            responseWriter.sendResponse(connection.getInputStream(), resp);
         }
     }
 }

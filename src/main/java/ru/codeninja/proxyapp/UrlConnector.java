@@ -1,5 +1,6 @@
 package ru.codeninja.proxyapp;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -15,7 +16,9 @@ public class UrlConnector {
     public static final String HTTP_HEADER_USER_AGENT = "User-Agent";
     public static final String USER_AGENT = "Mozilla/5.0";
 
-    public HttpURLConnection openGetConnection(String url) {
+    public static String[] acceptedHeaders = {"Accept-Language", "Accept"};
+
+    public HttpURLConnection openGetConnection(String url, HttpServletRequest request) {
         HttpURLConnection conn = null;
 
         try {
@@ -24,6 +27,14 @@ public class UrlConnector {
 
             conn.setRequestMethod(GET_METHOD);
             conn.setRequestProperty(HTTP_HEADER_USER_AGENT, USER_AGENT);
+            conn.setRequestProperty("Accept-Encoding", "deflate");
+
+            for (String headerName : acceptedHeaders) {
+                String value = request.getHeader(headerName);
+                if (value != null) {
+                    conn.setRequestProperty(headerName, value);
+                }
+            }
 
         } catch (IOException e) {
             // ...

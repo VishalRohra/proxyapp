@@ -1,4 +1,4 @@
-package ru.codeninja.proxyapp;
+package ru.codeninja.proxyapp.url;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -6,9 +6,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Copyright 2009-2012. NxSystems Inc.
- * PROPRIETARY/CONFIDENTIAL.
- * <p/>
  * Created: 25.01.15 13:35
  *
  * @author Vitaliy Mayorov

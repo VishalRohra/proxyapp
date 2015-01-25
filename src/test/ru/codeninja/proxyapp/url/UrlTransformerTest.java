@@ -1,13 +1,10 @@
-package ru.codeninja.proxyapp;
+package ru.codeninja.proxyapp.url;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 /**
- * Copyright 2009-2012. NxSystems Inc.
- * PROPRIETARY/CONFIDENTIAL.
- * <p/>
  * Created: 25.01.15 13:37
  *
  * @author Vitaliy Mayorov

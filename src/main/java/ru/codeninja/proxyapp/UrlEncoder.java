@@ -13,13 +13,13 @@ import java.util.logging.Logger;
  *
  * @author Vitaliy Mayorov
  */
-public class UrlTransformer {
+public class UrlEncoder {
     private final Logger l = Logger.getLogger(this.getClass().getName());
     private URI currentUrl;
     private String baseUrl;
     private String baseHostUrl;
 
-    public UrlTransformer(String currentUrl) {
+    public UrlEncoder(String currentUrl) {
         try {
             this.currentUrl = new URI(currentUrl);
         } catch (URISyntaxException e) {

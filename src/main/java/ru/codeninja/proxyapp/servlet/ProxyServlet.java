@@ -1,12 +1,16 @@
-package ru.codeninja.proxyapp;
+package ru.codeninja.proxyapp.servlet;
+
+import ru.codeninja.proxyapp.HeaderMapper;
+import ru.codeninja.proxyapp.RequestParamParser;
+import ru.codeninja.proxyapp.UrlConnector;
+import ru.codeninja.proxyapp.response.ResponseWriter;
+import ru.codeninja.proxyapp.response.ResponseWriterFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.util.logging.Logger;
 
@@ -16,11 +20,12 @@ import java.util.logging.Logger;
  * @author Vitaliy Mayorov
  */
 public class ProxyServlet extends HttpServlet {
-    private final Logger l = Logger.getLogger(this.getClass().getName());
+    final Logger l = Logger.getLogger(this.getClass().getName());
 
-    private UrlConnector urlConnector;
-    private RequestParamParser requestParamParser;
-    private HeaderMapper headerMapper;
+    UrlConnector urlConnector;
+    RequestParamParser requestParamParser;
+    HeaderMapper headerMapper;
+    ResponseWriterFactory responseWriterFactory;
 
     @Override
     public void init() throws ServletException {
@@ -29,6 +34,7 @@ public class ProxyServlet extends HttpServlet {
         urlConnector = new UrlConnector();
         requestParamParser = new RequestParamParser();
         headerMapper = new HeaderMapper();
+        responseWriterFactory = new ResponseWriterFactory();
     }
 
     @Override
@@ -45,8 +51,8 @@ public class ProxyServlet extends HttpServlet {
         } else {
             headerMapper.setHeaders(resp, connection);
 
-            ResponseWriter responseWriter = new BinaryResponseWriter();
-            responseWriter.sendResponse(connection.getInputStream(), resp);
+            ResponseWriter responseWriter = responseWriterFactory.get(connection);
+            responseWriter.sendResponse(connection, resp);
         }
     }
 }

@@ -1,7 +1,10 @@
 package ru.codeninja.proxyapp.url;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,7 +30,6 @@ public class UrlEncoder {
     }
 
     private void makeBaseUrl(URI currentUrl) {
-        //todo port
         String parentPath = currentUrl.getPath();
         if (!parentPath.endsWith("/")) {
             parentPath = currentUrl.resolve(".").getPath();
@@ -54,6 +56,6 @@ public class UrlEncoder {
             result = baseUrl + url;
         }
 
-        return result;
+        return UrlEscape.encode(result);
     }
 }

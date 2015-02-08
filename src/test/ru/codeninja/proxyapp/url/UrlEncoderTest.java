@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
  *
  * @author Vitaliy Mayorov
  */
-public class UrlTransformerTest {
+public class UrlEncoderTest {
     public static final String CURRENT_URL = "http://some_site.com/test/hello.php?test1=123&test2=abc";
     private UrlEncoder urlEncoder;
 
@@ -26,5 +26,6 @@ public class UrlTransformerTest {
         assertEquals("/s/google.com/test?q=abc123", urlEncoder.encode("https://google.com/test?q=abc123"));
         assertEquals("/some_site.com/test/img/bg.png", urlEncoder.encode("img/bg.png"));
         assertEquals("/some_site.com/img/bg.png", urlEncoder.encode("/img/bg.png"));
+        assertEquals("/s/google.com%3A8080/test?q=abc123&test1=123abc%32", urlEncoder.encode("https://google.com:8080/test?q=abc123&test1=123abc%32"));
     }
 }

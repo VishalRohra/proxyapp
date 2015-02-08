@@ -21,6 +21,6 @@ public class UrlDecoder {
             l.log(Level.WARNING, "cannot decode url {}", url);
         }
 
-        return result;
+        return UrlEscape.decode(result);
     }
 }

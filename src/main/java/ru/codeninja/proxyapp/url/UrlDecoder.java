@@ -13,7 +13,9 @@ public class UrlDecoder {
 
     public String decode(String url) {
         String result = null;
-        if (url.startsWith("/s/")) {
+        if (url.equals("/") || url.isEmpty()) {
+            result = url;
+        } else if (url.startsWith("/s/")) {
             result = url.replaceFirst("/s/", "https://");
         } else if (url.startsWith("/")) {
             result = url.replaceFirst("/", "http://");
@@ -21,6 +23,6 @@ public class UrlDecoder {
             l.log(Level.WARNING, "cannot decode url {}", url);
         }
 
-        return UrlEscape.decode(result);
+        return result;
     }
 }

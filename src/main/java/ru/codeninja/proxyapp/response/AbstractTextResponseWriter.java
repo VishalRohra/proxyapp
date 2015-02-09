@@ -30,6 +30,7 @@ public abstract class AbstractTextResponseWriter implements ResponseWriter {
         if (charset != null) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), charset));
             String currentUrl = connection.getURL().toString();
+            output.setCharacterEncoding(charset);
             contentModifier.modify(currentUrl, reader, output.getWriter());
             reader.close();
         } else {

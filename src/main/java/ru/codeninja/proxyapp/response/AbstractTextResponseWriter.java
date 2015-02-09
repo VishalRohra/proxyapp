@@ -29,7 +29,8 @@ public abstract class AbstractTextResponseWriter implements ResponseWriter {
 
         if (charset != null) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), charset));
-            contentModifier.modify(reader, output.getWriter());
+            String currentUrl = connection.getURL().toString();
+            contentModifier.modify(currentUrl, reader, output.getWriter());
             reader.close();
         } else {
             l.log(Level.WARNING, "cannot determinate charset for content type '{}'", contentType);

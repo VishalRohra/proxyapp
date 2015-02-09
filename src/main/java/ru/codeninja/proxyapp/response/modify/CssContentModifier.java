@@ -8,7 +8,7 @@ import java.io.PrintWriter;
  */
 public class CssContentModifier implements ContentModifier {
     @Override
-    public void modify(BufferedReader inputReader, PrintWriter outputStream) {
+    public void modify(String currentUrl, BufferedReader inputReader, PrintWriter outputStream) {
         //todo implement
     }
 }

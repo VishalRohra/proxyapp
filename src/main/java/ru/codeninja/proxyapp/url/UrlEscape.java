@@ -3,6 +3,7 @@ package ru.codeninja.proxyapp.url;
 /**
  * Created by vital on 08.02.15.
  */
+@Deprecated
 public class UrlEscape {
 
     public static String encode(String url) {

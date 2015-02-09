@@ -17,7 +17,9 @@ public class HtmlContentModifier implements ContentModifier {
     final Logger l = Logger.getLogger(this.getClass().getName());
     final Pattern[] patterns = {
             Pattern.compile("href=['\"]?([^'^\"\\s]+)['\"]?"),
-            Pattern.compile("src=['\"]?([^'^\"\\s]+)['\"]?")
+            Pattern.compile("src=['\"]?([^'^\"\\s]+)['\"]?"),
+            Pattern.compile("url[\\s]*\\(['\"]?([^'^\"^\\)]+)['\"]?\\)"), // css url(..)
+            Pattern.compile("@import[\\s]*['\"]?([^'^\"^;]+)['\"]?"), // css @import
     };
 
     @Override

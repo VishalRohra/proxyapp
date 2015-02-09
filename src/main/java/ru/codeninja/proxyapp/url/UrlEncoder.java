@@ -3,8 +3,10 @@ package ru.codeninja.proxyapp.url;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,6 +46,12 @@ public class UrlEncoder {
     public String encode(String url) {
         String result = ""; //todo make a default page
 
+        try {
+            url = URLDecoder.decode(url, StandardCharsets.UTF_8.name());
+        } catch (UnsupportedEncodingException e) {
+            l.log(Level.SEVERE, "something wrong", e);
+        }
+
         if (url.startsWith("http://")) {
             result = '/' + url.replaceFirst("http://", "");
         } else if (url.startsWith("//")) {
@@ -56,6 +64,7 @@ public class UrlEncoder {
             result = baseUrl + url;
         }
 
-        return UrlEscape.encode(result);
+        //todo url escaping
+        return result;
     }
 }

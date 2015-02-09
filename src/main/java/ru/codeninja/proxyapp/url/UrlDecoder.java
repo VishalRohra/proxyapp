@@ -13,6 +13,7 @@ public class UrlDecoder {
 
     public String decode(String url) {
         String result = null;
+
         if (url.equals("/") || url.isEmpty()) {
             result = url;
         } else if (url.startsWith("/s/")) {

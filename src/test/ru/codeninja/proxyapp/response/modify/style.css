@@ -1,0 +1,5 @@
+@import "css/main.css";
+body {
+    background: #fff;
+    background-image: url("img/bg.png");
+}

@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -24,24 +23,12 @@ public class HtmlContentModifier implements ContentModifier {
 
     @Override
     public void modify(String currentUrl, BufferedReader inputReader, PrintWriter outputStream) {
-        //todo modify
         String line;
 
         try {
             UrlEncoder urlEncoder = new UrlEncoder(currentUrl);
             while ((line = inputReader.readLine()) != null) {
-                StringBuffer lineBuff = new StringBuffer(line);
-                for (Pattern pattern : patterns) {
-                    Matcher matcher = pattern.matcher(lineBuff);
-                    while (matcher.find()) {
-                        StringBuffer str = new StringBuffer();
-                        str.append(lineBuff.substring(0, matcher.start(1)));
-                        str.append(urlEncoder.encode(matcher.group(1)));
-                        str.append(lineBuff.substring(matcher.end(1), lineBuff.length()));
-
-                        lineBuff = str;
-                    }
-                }
+                StringBuffer lineBuff = PatternReplace.replace(patterns, line, urlEncoder);
 
                 outputStream.println(lineBuff);
             }

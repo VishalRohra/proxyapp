@@ -1,0 +1,5 @@
+@import "/some_page.com/test/css/main.css";
+body {
+    background: #fff;
+    background-image: url("/some_page.com/test/img/bg.png");
+}

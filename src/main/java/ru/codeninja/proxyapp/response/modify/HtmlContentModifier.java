@@ -17,6 +17,7 @@ public class HtmlContentModifier extends AbstractRegExpContentModifier implement
     final Pattern[] patterns = {
             Pattern.compile("href=['\"]?([^'^\"\\s]+)['\"]?"),
             Pattern.compile("src=['\"]?([^'^\"\\s]+)['\"]?"),
+            Pattern.compile("action=['\"]?([^'^\"\\s]+)['\"]?"), // form
             Pattern.compile("url[\\s]*\\(['\"]?([^'^\"^\\)]+)['\"]?\\)"), // css url(..)
             Pattern.compile("@import[\\s]*['\"]?([^'^\"^;]+)['\"]?"), // css @import
     };

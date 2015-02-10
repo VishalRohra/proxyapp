@@ -14,7 +14,12 @@ public class RequestParamParser {
     final static UrlDecoder URL_DECODER = new UrlDecoder();
 
     public String getUrl(HttpServletRequest request) {
-        String url = URL_DECODER.decode(request.getPathInfo());
+        String requestedUrl = request.getPathInfo();
+        if (request.getQueryString() != null && !request.getQueryString().isEmpty()) {
+            requestedUrl = requestedUrl + '?' + request.getQueryString();
+        }
+
+        String url = URL_DECODER.decode(requestedUrl);
 
         if (url == null || url.isEmpty()) {
             //todo parse path

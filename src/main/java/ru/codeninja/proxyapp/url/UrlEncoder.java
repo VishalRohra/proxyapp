@@ -43,14 +43,17 @@ public class UrlEncoder {
 
     }
 
+    private String decodeSpecialChars(String url) {
+        return url
+                .replaceAll("&#47;", "/")
+                .replaceAll("%2F", "/")
+                .replaceFirst("%3A", ":");
+    }
+
     public String encode(String url) {
         String result = ""; //todo make a default page
 
-        try {
-            url = URLDecoder.decode(url, StandardCharsets.UTF_8.name());
-        } catch (UnsupportedEncodingException e) {
-            l.log(Level.SEVERE, "something wrong", e);
-        }
+        url = decodeSpecialChars(url);
 
         if (url.startsWith("http://")) {
             result = '/' + url.replaceFirst("http://", "");

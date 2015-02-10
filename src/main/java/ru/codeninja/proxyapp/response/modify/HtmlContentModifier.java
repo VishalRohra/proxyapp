@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 /**
  * Created by vital on 08.02.15.
  */
-public class HtmlContentModifier implements ContentModifier {
+public class HtmlContentModifier extends AbstractRegExpContentModifier implements ContentModifier {
     final Logger l = Logger.getLogger(this.getClass().getName());
     final Pattern[] patterns = {
             Pattern.compile("href=['\"]?([^'^\"\\s]+)['\"]?"),
@@ -28,7 +28,7 @@ public class HtmlContentModifier implements ContentModifier {
         try {
             UrlEncoder urlEncoder = new UrlEncoder(currentUrl);
             while ((line = inputReader.readLine()) != null) {
-                StringBuffer lineBuff = PatternReplace.replace(patterns, line, urlEncoder);
+                StringBuffer lineBuff = replace(patterns, line, urlEncoder);
 
                 outputStream.println(lineBuff);
             }

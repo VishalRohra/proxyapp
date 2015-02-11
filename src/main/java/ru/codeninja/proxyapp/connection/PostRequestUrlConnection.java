@@ -14,7 +14,6 @@ import java.util.logging.Level;
  * Created by vital on 11.02.15.
  */
 public class PostRequestUrlConnection extends AbstractUrlConnection implements UrlConnection {
-    static final String POST_METHOD = "POST";
 
     @Override
     public HttpURLConnection connect(String url, HttpServletRequest request) {
@@ -32,7 +31,7 @@ public class PostRequestUrlConnection extends AbstractUrlConnection implements U
             conn = (HttpURLConnection) urlAddress.openConnection();
 
             conn.setDoOutput(true);
-            conn.setRequestMethod(POST_METHOD);
+            conn.setRequestMethod(HttpMethod.POST.getName());
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setRequestProperty("Content-Length", String.valueOf(postData.length()));
 

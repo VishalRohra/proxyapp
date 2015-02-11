@@ -10,7 +10,6 @@ import java.util.logging.Level;
  * Created by vital on 11.02.15.
  */
 public class GetRequestUrlConnection extends AbstractUrlConnection implements UrlConnection {
-    static final String GET_METHOD = "GET";
 
     @Override
     public HttpURLConnection connect(String url, HttpServletRequest request) {
@@ -20,7 +19,7 @@ public class GetRequestUrlConnection extends AbstractUrlConnection implements Ur
             URL urlAddress = new URL(url);
             conn = (HttpURLConnection) urlAddress.openConnection();
 
-            conn.setRequestMethod(GET_METHOD);
+            conn.setRequestMethod(HttpMethod.GET.getName());
 
             setBasicHeaders(request, conn);
 

@@ -2,7 +2,10 @@ package ru.codeninja.proxyapp.servlet;
 
 import ru.codeninja.proxyapp.HeaderMapper;
 import ru.codeninja.proxyapp.RequestParamParser;
-import ru.codeninja.proxyapp.UrlConnector;
+import ru.codeninja.proxyapp.connection.AbstractUrlConnection;
+import ru.codeninja.proxyapp.connection.HttpMethod;
+import ru.codeninja.proxyapp.connection.UrlConnection;
+import ru.codeninja.proxyapp.connection.UrlConnectionFactory;
 import ru.codeninja.proxyapp.response.ResponseWriter;
 import ru.codeninja.proxyapp.response.ResponseWriterFactory;
 
@@ -22,7 +25,7 @@ import java.util.logging.Logger;
 public class ProxyServlet extends HttpServlet {
     final Logger l = Logger.getLogger(this.getClass().getName());
 
-    UrlConnector urlConnector;
+    UrlConnectionFactory urlConnectionFactory;
     RequestParamParser requestParamParser;
     HeaderMapper headerMapper;
     ResponseWriterFactory responseWriterFactory;
@@ -31,7 +34,7 @@ public class ProxyServlet extends HttpServlet {
     public void init() throws ServletException {
         super.init();
 
-        urlConnector = new UrlConnector();
+        urlConnectionFactory = new UrlConnectionFactory();
         requestParamParser = new RequestParamParser();
         headerMapper = new HeaderMapper();
         responseWriterFactory = new ResponseWriterFactory();
@@ -39,9 +42,15 @@ public class ProxyServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        UrlConnection urlConnection = urlConnectionFactory.get(HttpMethod.POST);
+
+        processRequest(urlConnection, req, resp);
+    }
+
+    private void processRequest(UrlConnection urlConnection, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String url = requestParamParser.getUrl(req);
 
-        HttpURLConnection connection = urlConnector.openPostConnection(url, req);
+        HttpURLConnection connection = urlConnection.connect(url, req);
         if (connection == null) {
             //todo implement an error page
         } else {
@@ -54,17 +63,8 @@ public class ProxyServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String url = requestParamParser.getUrl(req);
+        UrlConnection urlConnection = urlConnectionFactory.get(HttpMethod.GET);
 
-        HttpURLConnection connection = urlConnector.openGetConnection(url, req);
-        if (connection == null) {
-            //todo implement an error page
-        } else {
-            headerMapper.setHeaders(resp, connection);
-
-            ResponseWriter responseWriter = responseWriterFactory.get(connection);
-            responseWriter.sendResponse(connection, resp);
-        }
-
+        processRequest(urlConnection, req, resp);
     }
 }

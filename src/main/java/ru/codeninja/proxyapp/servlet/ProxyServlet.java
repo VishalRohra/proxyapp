@@ -39,7 +39,16 @@ public class ProxyServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        throw new UnsupportedOperationException();
+        String url = requestParamParser.getUrl(req);
+        HttpURLConnection connection = urlConnector.openPostConnection(url, req);
+        if (connection == null) {
+            //todo implement an error page
+        } else {
+            headerMapper.setHeaders(resp, connection);
+
+            ResponseWriter responseWriter = responseWriterFactory.get(connection);
+            responseWriter.sendResponse(connection, resp);
+        }
     }
 
     @Override

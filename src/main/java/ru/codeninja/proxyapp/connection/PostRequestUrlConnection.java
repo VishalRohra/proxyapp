@@ -1,6 +1,7 @@
 package ru.codeninja.proxyapp.connection;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -27,6 +28,15 @@ public class PostRequestUrlConnection extends AbstractUrlConnection implements U
                 }
                 postData.append(paramName + "=" + URLEncoder.encode(request.getParameter(paramName), "UTF-8"));
             }
+
+            BufferedReader reader = request.getReader();
+            StringBuffer rawData = new StringBuffer();
+            char[] buff = new char[1024];
+            int count;
+            while ((count = reader.read(buff)) != -1) {
+                rawData.append(buff, 0, count);
+            }
+
             URL urlAddress = new URL(url);
             conn = (HttpURLConnection) urlAddress.openConnection();
 
@@ -38,7 +48,11 @@ public class PostRequestUrlConnection extends AbstractUrlConnection implements U
             setBasicHeaders(request, conn);
 
             OutputStream os = conn.getOutputStream();
-            os.write(postData.toString().getBytes());
+            if (rawData.length() > 0) {
+                os.write(rawData.toString().getBytes());
+            } else {
+                os.write(postData.toString().getBytes());
+            }
 
         } catch (IOException e) {
             l.log(Level.WARNING, e.getMessage(), e);

@@ -40,6 +40,7 @@ public class ProxyServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String url = requestParamParser.getUrl(req);
+
         HttpURLConnection connection = urlConnector.openPostConnection(url, req);
         if (connection == null) {
             //todo implement an error page
@@ -54,6 +55,7 @@ public class ProxyServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String url = requestParamParser.getUrl(req);
+
         HttpURLConnection connection = urlConnector.openGetConnection(url, req);
         if (connection == null) {
             //todo implement an error page
@@ -63,5 +65,6 @@ public class ProxyServlet extends HttpServlet {
             ResponseWriter responseWriter = responseWriterFactory.get(connection);
             responseWriter.sendResponse(connection, resp);
         }
+
     }
 }

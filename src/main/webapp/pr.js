@@ -4,10 +4,10 @@
         var path = window.location.pathname;
         function base_host(path) {
             parts = path.split("/");
-            if (parts[0] == "s") {
-                return "/s/" + parts[1];
+            if (parts[1] == "s") {
+                return "/s/" + parts[2];
             } else {
-                return parts[0];
+                return "/" + parts[1];
             }
         }
 
@@ -29,7 +29,7 @@
         } else if (url.indexOf("https://") === 0) {
             return url.replace("https://", "/s/");
         } else if (url.indexOf("/") === 0) {
-            return base_host(path) + "/" + url;
+            return base_host(path) + url;
         } else {
             return base_url(path) + "/" + url;
         }
@@ -37,8 +37,9 @@
     }
 
     XMLHttpRequest.prototype.open = function(method, url, async, user, pass) {
-        console.log(url);
-        open.call(this, method, safe_url(url), async, user, pass);
+        var sUrl = safe_url(url);
+        console.log(url + " redirected to " + sUrl);
+        open.call(this, method, sUrl, async, user, pass);
     };
 
 })(XMLHttpRequest.prototype.open);

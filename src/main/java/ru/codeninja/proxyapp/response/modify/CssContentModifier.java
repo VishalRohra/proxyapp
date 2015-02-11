@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  */
 public class CssContentModifier extends AbstractRegExpContentModifier implements ContentModifier {
     final Logger l = Logger.getLogger(this.getClass().getName());
-    final Pattern[] patterns = {
+    final static Pattern[] patterns = {
             Pattern.compile("url[\\s]*\\(['\"]?([^'^\"^\\)]+)['\"]?\\)"), // css url(..)
             Pattern.compile("@import[\\s]*['\"]?([^'^\"^;]+)['\"]?"), // css @import
     };

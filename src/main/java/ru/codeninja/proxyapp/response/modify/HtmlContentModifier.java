@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -14,13 +15,17 @@ import java.util.regex.Pattern;
  */
 public class HtmlContentModifier extends AbstractRegExpContentModifier implements ContentModifier {
     final Logger l = Logger.getLogger(this.getClass().getName());
-    final Pattern[] patterns = {
+
+    static final String INJECTED_CODE = "<script src=\"/pr.js\"></script>";
+    final static Pattern[] patterns = {
             Pattern.compile("href=['\"]?([^'^\"\\s]+)['\"]?"),
             Pattern.compile("src=['\"]?([^'^\"\\s]+)['\"]?"),
             Pattern.compile("action=['\"]?([^'^\"\\s]+)['\"]?"), // form
             Pattern.compile("url[\\s]*\\(['\"]?([^'^\"^\\)]+)['\"]?\\)"), // css url(..)
             Pattern.compile("@import[\\s]*['\"]?([^'^\"^;]+)['\"]?"), // css @import
     };
+
+    final static Pattern HEAD = Pattern.compile("<head[^>]*>");
 
     @Override
     public void modify(String currentUrl, BufferedReader inputReader, PrintWriter outputStream) {
@@ -30,6 +35,16 @@ public class HtmlContentModifier extends AbstractRegExpContentModifier implement
             UrlEncoder urlEncoder = new UrlEncoder(currentUrl);
             while ((line = inputReader.readLine()) != null) {
                 StringBuffer lineBuff = replace(patterns, line, urlEncoder);
+
+                Matcher headMatcher = HEAD.matcher(lineBuff);
+                while (headMatcher.find()) {
+                    StringBuffer buf = new StringBuffer();
+                    String headTag = headMatcher.group();
+                    headMatcher.appendReplacement(buf, headTag);
+                    buf.append("\n" + INJECTED_CODE);
+                    headMatcher.appendTail(buf);
+                    lineBuff = buf;
+                }
 
                 outputStream.println(lineBuff);
             }

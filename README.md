@@ -12,7 +12,6 @@ Pros:
 TODO:
  * cookie processing
  * ajax support
- * POST request support
  * flash filter
  * web form
  * block common spy js (like google analytic)

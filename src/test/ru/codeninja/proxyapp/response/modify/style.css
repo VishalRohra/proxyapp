@@ -3,3 +3,7 @@ body {
     background: #fff;
     background-image: url("img/bg.png");
 }
+.postbtn-hide {
+    background:url("data:image/gif;base64,R0lGODlhDgAOAJEAAPDw8IyMjP///wAAACH5BAEAAAIALAAAAAAOAA4AQAIUVI55pu0Pozyg2jqz3u9evjGRUAAAOw==") no-repeat;
+    color: #444;
+}

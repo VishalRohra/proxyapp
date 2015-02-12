@@ -30,5 +30,6 @@ public class UrlEncoderTest {
         assertEquals("/some_site.com/test/img/bg.png", urlEncoder.encode("img/bg.png"));
         assertEquals("/some_site.com/img/bg.png", urlEncoder.encode("/img/bg.png"));
         assertEquals("/s/google.com:8080/test?q=abc123&test1=123abc", urlEncoder.encode("https://google.com:8080/test?q=abc123&test1=123abc"));
+        assertEquals("data:image/gif;base64,R0lGODlhDgAOAJEAAPDw8IyMjP///wAAACH5BAEAAAIALAAAAAAOAA4AQAIUVI55pu0Pozyg2jqz3u9evjGRUAAAOw==", urlEncoder.encode("data:image/gif;base64,R0lGODlhDgAOAJEAAPDw8IyMjP///wAAACH5BAEAAAIALAAAAAAOAA4AQAIUVI55pu0Pozyg2jqz3u9evjGRUAAAOw=="));
     }
 }

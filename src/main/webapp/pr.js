@@ -1,4 +1,4 @@
-(function(open) {
+(function(open, document) {
     function safe_url(url) {
 
         var path = window.location.pathname;
@@ -42,4 +42,20 @@
         open.call(this, method, sUrl, async, user, pass);
     };
 
-})(XMLHttpRequest.prototype.open);
+    if (MutationObserver) {
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function (mutation) {
+                console.log(mutation.type);
+            });
+        });
+
+        var config = {
+            attributes: true,
+            childList: true,
+            subtree: true,
+            attributeFilter: ["href", "src", "action"] };
+
+        observer.observe(document, config);
+    }
+
+})(XMLHttpRequest.prototype.open, document);

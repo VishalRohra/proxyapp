@@ -61,6 +61,8 @@ public class UrlEncoder {
             result = '/' + url.replaceFirst("//", "");
         } else if (url.startsWith("https://")) {
             result = "/s/" + url.replaceFirst("https://", "");
+        } else if (url.startsWith("data:image")) {
+            result = url;
         } else if (url.startsWith("/")) {
             result = baseHostUrl + url.replaceFirst("/", "");
         } else {

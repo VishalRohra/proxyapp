@@ -6,14 +6,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 /**
  * Created by vital on 08.02.15.
  */
 public class CssContentModifier extends AbstractRegExpContentModifier implements ContentModifier {
-    final Logger l = Logger.getLogger(this.getClass().getName());
     final static Pattern[] patterns = {
             Pattern.compile("url[\\s]*\\(['\"]?([^'^\"^\\)]+)['\"]?\\)"), // css url(..)
             Pattern.compile("@import[\\s]*['\"]?([^'^\"^;]+)['\"]?"), // css @import

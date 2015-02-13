@@ -2,6 +2,7 @@ package ru.codeninja.proxyapp.response.modify;
 
 import ru.codeninja.proxyapp.url.UrlEncoder;
 
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,6 +10,8 @@ import java.util.regex.Pattern;
  * Created by vital on 09.02.15.
  */
 public class AbstractRegExpContentModifier {
+
+    protected final Logger l = Logger.getLogger(this.getClass().getName());
 
     protected StringBuffer replace(Pattern[] patterns, String line, UrlEncoder urlEncoder) {
         StringBuffer lineBuff = new StringBuffer(line);

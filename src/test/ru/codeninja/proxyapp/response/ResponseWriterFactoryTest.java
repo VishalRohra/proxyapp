@@ -1,6 +1,7 @@
 package ru.codeninja.proxyapp.response;
 
 import org.junit.Test;
+import ru.codeninja.proxyapp.response.writer.HtmlResponseWriter;
 
 import java.net.HttpURLConnection;
 

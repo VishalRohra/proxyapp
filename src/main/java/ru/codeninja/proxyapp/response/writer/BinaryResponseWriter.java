@@ -1,4 +1,4 @@
-package ru.codeninja.proxyapp.response;
+package ru.codeninja.proxyapp.response.writer;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;

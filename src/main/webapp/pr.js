@@ -1,33 +1,32 @@
 (function(window) {
     var path = window.location.pathname;
-    window._location = {
-        hash: "hehe",
-        host: "haha",
-        hostname: "hehehe",
-        href: "ololo",
-        origin: "lolo",
-        pathname: "hehe",
-        port: "80",
-        protocol: "http:",
-        assign: function(url) {
-            window.location.assign($url(url));
-        },
-        reload: function(bool) {
-            window.location.assign(bool);
-        },
-        replace: function(url) {
-            window.location.replace($url(url));
-        },
-        toString: function() {
-            return "http://google.com/";
-        },
-        search: function(str) {
-            window.location.search(str);
-        },
-        toString: function() {
-            return "he he he";
-        }
-    };
+    with (window) {
+        _location = {
+            hash: location.hash,
+            host: location.host,
+            hostname: location.hostname,
+            href: location.href,
+            origin: location.origin,
+            pathname: location.pathname,
+            port: location.port,
+            protocol: location.protocol,
+            assign: function(url) {
+                location.assign($url(url));
+            },
+            reload: function(bool) {
+                location.assign(bool);
+            },
+            replace: function(url) {
+                location.replace($url(url));
+            },
+            search: function(str) {
+                location.search(str);
+            },
+            toString: function() {
+                return location.toString();
+            }
+        };
+    }
 
     function base_host(path) {
         parts = path.split("/");

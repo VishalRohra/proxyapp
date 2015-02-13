@@ -2,11 +2,10 @@ package ru.codeninja.proxyapp.servlet;
 
 import ru.codeninja.proxyapp.HeaderMapper;
 import ru.codeninja.proxyapp.RequestParamParser;
-import ru.codeninja.proxyapp.connection.AbstractUrlConnection;
 import ru.codeninja.proxyapp.connection.HttpMethod;
 import ru.codeninja.proxyapp.connection.UrlConnection;
 import ru.codeninja.proxyapp.connection.UrlConnectionFactory;
-import ru.codeninja.proxyapp.response.ResponseWriter;
+import ru.codeninja.proxyapp.response.writer.ResponseWriter;
 import ru.codeninja.proxyapp.response.ResponseWriterFactory;
 
 import javax.servlet.ServletException;

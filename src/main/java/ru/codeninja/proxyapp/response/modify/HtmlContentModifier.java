@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * Created by vital on 08.02.15.
  */
 public class HtmlContentModifier extends AbstractRegExpContentModifier implements ContentModifier {
-    final Logger l = Logger.getLogger(this.getClass().getName());
 
     static final String INJECTED_CODE = "<script src=\"/pr.js\"></script>";
     final static Pattern[] patterns = {

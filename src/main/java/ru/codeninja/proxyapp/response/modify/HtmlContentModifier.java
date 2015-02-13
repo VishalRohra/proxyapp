@@ -25,7 +25,7 @@ public class HtmlContentModifier extends AbstractRegExpContentModifier implement
             Pattern.compile("@import[\\s]*['\"]?([^'^\"^;]+)['\"]?"), // css @import
     };
 
-    final static Pattern HEAD = Pattern.compile("<head[\\s]*>");
+    final static Pattern HEAD = Pattern.compile("<head([\\s]*|[\\s]+[^>]+)>");
 
     @Override
     public void modify(String currentUrl, BufferedReader inputReader, PrintWriter outputStream) {

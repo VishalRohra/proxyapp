@@ -1,7 +1,7 @@
 package ru.codeninja.proxyapp.servlet;
 
-import ru.codeninja.proxyapp.HeaderMapper;
-import ru.codeninja.proxyapp.RequestParamParser;
+import ru.codeninja.proxyapp.response.HeaderMapper;
+import ru.codeninja.proxyapp.response.RequestParamParser;
 import ru.codeninja.proxyapp.connection.HttpMethod;
 import ru.codeninja.proxyapp.connection.UrlConnection;
 import ru.codeninja.proxyapp.connection.UrlConnectionFactory;

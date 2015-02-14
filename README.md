@@ -7,6 +7,7 @@ Pros:
  + java && Google App Engine support
  + minimum dependencies
  + clean urls
+ + ajax support
 
 
 TODO:
@@ -15,3 +16,4 @@ TODO:
  * flash filter
  * web form
  * block common spy js (like google analytic)
+ * redirects

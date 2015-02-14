@@ -1,4 +1,4 @@
-package ru.codeninja.proxyapp;
+package ru.codeninja.proxyapp.response;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

@@ -42,7 +42,12 @@ public class ProxyServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UrlConnection urlConnection = urlConnectionFactory.get(HttpMethod.POST);
+        processRequest(urlConnection, req, resp);
+    }
 
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        UrlConnection urlConnection = urlConnectionFactory.get(HttpMethod.GET);
         processRequest(urlConnection, req, resp);
     }
 
@@ -60,10 +65,4 @@ public class ProxyServlet extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UrlConnection urlConnection = urlConnectionFactory.get(HttpMethod.GET);
-
-        processRequest(urlConnection, req, resp);
-    }
 }

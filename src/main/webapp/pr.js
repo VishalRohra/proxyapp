@@ -182,7 +182,7 @@
             });
         });
 
-        var config = { attributes: true, childList: true, characterData: true, subtree: true, attributeFilter: ["src", "href", "action"] };
+        var config = { attributes: true, characterData: true, subtree: true, attributeFilter: ["src", "href", "action"] };
         observer.observe(document, config);
     }
 
@@ -208,16 +208,17 @@
             }
 
             function copy_prop(name, from, to) {
-                if (is_url_prop(name)) {
-                    var url = $url(from[prop]);
-                    to[prop] = url;
-                    from[prop] = url;
-
-                } else {
-                    try {
-                        to[prop] = from[prop];
-                    } catch (e) {
-                        //console.log(e);
+                if (from[name] != undefined && from[name] != to[name]) {
+                    if (is_url_prop(name)) {
+                        var url = $url(from[name]);
+                        to[name] = url;
+                        from[name] = url;
+                    } else {
+                        try {
+                            to[name] = from[name];
+                        } catch (e) {
+                            //console.log(e);
+                        }
                     }
                 }
             }

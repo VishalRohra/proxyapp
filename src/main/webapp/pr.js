@@ -126,14 +126,17 @@
 
     (function($appendChild, $insertBefore, $replaceChild, $setAttribute, $setAttributeNS, $setAttributeNode, $setAttributeNodeNS) {
         Node.prototype.appendChild = function(node) {
+            node = unwrap(node);
             protect_node(node);
             return $appendChild.call(this, node);
         };
         Node.prototype.insertBefore = function(newElement, referenceElement) {
+            node = unwrap(newElement);
             protect_node(newElement);
             return $insertBefore.call(this, newElement, referenceElement);
         };
         Node.prototype.replaceChild = function(newChild, oldChild) {
+            node = unwrap(newChild);
             protect_node(newChild);
             return $replaceChild.call(this, newChild, oldChild);
         };
@@ -234,7 +237,7 @@
             this._returnOrigin = function() {
                 updateProps($this);
                 return _origin;
-            }
+            };
 
             window.setTimeout(function () {
                 updateProps($this);
@@ -243,8 +246,16 @@
         };
     }
 
+    function unwrap(object) {
+        if (object instanceof wImage) {
+            return object._returnOrigin();
+        } else {
+            return object;
+        }
+    }
+
     // todo intercept an insertion of this object into DOM
-    window.Image = wrap(window.Image);
+    window.Image = wImage = wrap(window.Image);
 
     //todo intercept document.createElement()
 

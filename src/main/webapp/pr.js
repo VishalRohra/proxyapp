@@ -200,7 +200,7 @@
                     var method = function() {
                         console.log("method " + prop + " is called");
                         updateProps(this);
-                        return originalMethod.apply(_origin, args);
+                        return originalMethod.apply(_origin, arguments);
                     }
                 } else {
                     var val = _origin[prop];

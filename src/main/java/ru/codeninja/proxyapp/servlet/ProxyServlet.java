@@ -59,7 +59,7 @@ public class ProxyServlet extends HttpServlet {
         String url = requestParamParser.getUrl(req);
 
         HttpURLConnection connection = urlConnection.connect(url, req);
-        CookiesRule cookiesRule = cookiesRuleFactory.getCookiesPolice(req);
+        CookiesRule cookiesRule = cookiesRuleFactory.getRule(req);
         cookiesRule.sendCookies(req, connection);
         if (connection == null) {
             //todo implement an error page

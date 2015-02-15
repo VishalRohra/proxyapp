@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 public class CookiesRuleFactory {
     final static NoCookiesRule NO_COOKIES_RULE = new NoCookiesRule();
 
-    public CookiesRule getCookiesPolice(HttpServletRequest request) {
+    public CookiesRule getRule(HttpServletRequest request) {
         return NO_COOKIES_RULE;
     }
 }

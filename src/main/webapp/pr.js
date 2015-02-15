@@ -1,4 +1,4 @@
-(function(window) {
+(function(window, document) {
     var path = window.location.pathname;
     with (window) {
         _location = {
@@ -71,7 +71,8 @@
     }
 
     function is_safe_url(url) {
-        return url.indexOf("/s/") === 0 || url.indexOf(baseHost) === 0 || url.indexOf("data:image") === 0 || url.indexOf("#") === 0 || url.match(/^\/[\w\.\:\@\-]{3,}\.[\w]{2,5}(:[0-9]+)?/g);
+        return (typeof url == "string" || url instanceof String)
+            && (url.indexOf("/s/") === 0 || url.indexOf(baseHost) === 0 || url.indexOf("data:image") === 0 || url.indexOf("#") === 0 || url.match(/^\/[\w\.\:\@\-]{3,}\.[\w]{2,5}(:[0-9]+)?/g));
     }
 
     function $url(url) {
@@ -80,6 +81,10 @@
         } else {
             return url;
         }
+    }
+
+    function is_url_prop(name) {
+        return name == "src" || name == "href" || name == "action";
     }
 
     function check_attribute(node, attrName) {
@@ -134,14 +139,14 @@
             return $replaceChild.call(this, newChild, oldChild);
         };
         Element.prototype.setAttribute = function(name, value) {
-            if (name == "href" || name == "src" || name == "action") {
+            if (is_url_prop(name)) {
                 value = $url(value);
             }
 
             return $setAttribute.call(this, name, value);
         };
         Element.prototype.setAttributeNS = function(namespace, name, value) {
-            if (name == "href" || name == "src" || name == "action") {
+            if (is_url_prop(name)) {
                 value = $url(value);
             }
 
@@ -150,7 +155,7 @@
         Element.prototype.setAttributeNode = function(attr) {
             if (attr) {
                 var name = attr.name;
-                if (name == "href" || name == "src" || name == "action") {
+                if (is_url_prop(name)) {
                     value = $url(attr.value);
                 }
             }
@@ -160,7 +165,7 @@
         Element.prototype.setAttributeNodeNS = function(attr) {
             if (attr) {
                 var name = attr.name;
-                if (name == "href" || name == "src" || name == "action") {
+                if (is_url_prop(name)) {
                     value = $url(attr.value);
                 }
             }
@@ -169,4 +174,74 @@
         };
     })(Node.prototype.appendChild, Node.prototype.insertBefore, Node.prototype.replaceChild,
         Element.prototype.setAttribute, Element.prototype.setAttributeNS, Element.prototype.setAttributeNode, Element.prototype.setAttributeNodeNS);
-})(window);
+
+
+    if (MutationObserver) {
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                console.log(mutation.type);
+            });
+        });
+
+        var config = { attributes: true, childList: true, characterData: true, subtree: true, attributeFilter: ["src", "href", "action"] };
+        observer.observe(document, config);
+    }
+
+    function wrap(object) {
+        console.log("stub " + object.name);
+        return function(args) {
+            var _origin = new object();
+            for (prop in _origin) {
+                if (typeof _origin[prop] == 'function') {
+                    var originalMethod = _origin[prop];
+                    var method = function() {
+                        console.log("method " + prop + " is called");
+                        updateProps(this);
+                        return originalMethod.apply(_origin, args);
+                    }
+                } else {
+                    var val = _origin[prop];
+                    if (val == 0 || val == "") {
+                    } else {
+                        copy_prop(prop, _origin, this);
+                    }
+                }
+            }
+
+            function copy_prop(name, from, to) {
+                if (is_url_prop(name)) {
+                    var url = $url(from[prop]);
+                    to[prop] = url;
+                    from[prop] = url;
+
+                } else {
+                    try {
+                        to[prop] = from[prop];
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }
+            }
+
+            function updateProps(stub) {
+                for(prop in _origin) {
+                    if (typeof _origin[prop] != 'function') {
+                        copy_prop(prop, stub, _origin);
+                    }
+                }
+            }
+
+            this._returnOrigin = function() {
+                updateProps(this);
+                return _origin;
+            }
+
+        };
+    }
+
+    // todo intercept an insertion of this object into DOM
+    window.Image = wrap(window.Image);
+
+    //todo intercept document.createElement()
+
+})(window, document);

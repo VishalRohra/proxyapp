@@ -201,8 +201,7 @@
                     }
                 } else {
                     var val = _origin[prop];
-                    if (val == 0 || val == "") {
-                    } else {
+                    if (val != 0 && val != "" && val != undefined) {
                         copy_prop(prop, _origin, this);
                     }
                 }

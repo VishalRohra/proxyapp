@@ -189,6 +189,7 @@
     function wrap(object) {
         console.log("stub " + object.name);
         return function(args) {
+            var $this = this;
             var _origin = new object();
             for (prop in _origin) {
                 if (typeof _origin[prop] == 'function') {
@@ -217,7 +218,7 @@
                     try {
                         to[prop] = from[prop];
                     } catch (e) {
-                        console.log(e);
+                        //console.log(e);
                     }
                 }
             }
@@ -231,12 +232,12 @@
             }
 
             this._returnOrigin = function() {
-                updateProps(this);
+                updateProps($this);
                 return _origin;
             }
 
             window.setTimeout(function () {
-                updateProps(this);
+                updateProps($this);
             }, 1000);
 
         };

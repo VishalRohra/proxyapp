@@ -10,6 +10,7 @@ import java.net.HttpURLConnection;
  * @author Vitaliy Mayorov
  */
 public class ResponseHeadersMapper {
+    public static final String CSP_POLICY = "default-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self' data:;";
     private static String[] acceptedHeaders = {"content-type", "expires", "last-modified"};
 
     public void setHeaders(HttpServletResponse response, HttpURLConnection headerSource) throws IOException {
@@ -24,6 +25,7 @@ public class ResponseHeadersMapper {
 
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
         response.setHeader("Pragma", "no-cache");
-        response.setHeader("Content-Security-Policy", "default-src 'self'");
+        response.setHeader("Content-Security-Policy", CSP_POLICY);
+        response.setHeader("X-Content-Security-Policy", CSP_POLICY);
     }
 }

@@ -2,7 +2,7 @@ package ru.codeninja.proxyapp.servlet;
 
 import ru.codeninja.proxyapp.cookies.CookiesRule;
 import ru.codeninja.proxyapp.cookies.CookiesRuleFactory;
-import ru.codeninja.proxyapp.response.HeaderMapper;
+import ru.codeninja.proxyapp.response.ResponseHeadersMapper;
 import ru.codeninja.proxyapp.response.RequestParamParser;
 import ru.codeninja.proxyapp.connection.HttpMethod;
 import ru.codeninja.proxyapp.connection.UrlConnection;
@@ -28,7 +28,7 @@ public class ProxyServlet extends HttpServlet {
 
     UrlConnectionFactory urlConnectionFactory;
     RequestParamParser requestParamParser;
-    HeaderMapper headerMapper;
+    ResponseHeadersMapper responseHeadersMapper;
     ResponseWriterFactory responseWriterFactory;
     CookiesRuleFactory cookiesRuleFactory;
 
@@ -38,7 +38,7 @@ public class ProxyServlet extends HttpServlet {
 
         urlConnectionFactory = new UrlConnectionFactory();
         requestParamParser = new RequestParamParser();
-        headerMapper = new HeaderMapper();
+        responseHeadersMapper = new ResponseHeadersMapper();
         responseWriterFactory = new ResponseWriterFactory();
         cookiesRuleFactory = new CookiesRuleFactory();
     }
@@ -64,7 +64,7 @@ public class ProxyServlet extends HttpServlet {
         if (connection == null) {
             //todo implement an error page
         } else {
-            headerMapper.setHeaders(resp, connection);
+            responseHeadersMapper.setHeaders(resp, connection);
             cookiesRule.receiveCookies(resp, connection);
 
             ResponseWriter responseWriter = responseWriterFactory.get(connection);

@@ -9,7 +9,7 @@ import java.net.HttpURLConnection;
  *
  * @author Vitaliy Mayorov
  */
-public class HeaderMapper {
+public class ResponseHeadersMapper {
     private static String[] acceptedHeaders = {"content-type", "expires", "last-modified"};
 
     public void setHeaders(HttpServletResponse response, HttpURLConnection headerSource) throws IOException {
@@ -24,5 +24,6 @@ public class HeaderMapper {
 
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
         response.setHeader("Pragma", "no-cache");
+        response.setHeader("Content-Security-Policy", "default-src 'self'");
     }
 }

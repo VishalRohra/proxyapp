@@ -7,7 +7,7 @@ import java.net.HttpURLConnection;
 /**
  * Created by vital on 14.02.15.
  */
-public interface CookiesRule {
+public interface CookiesHandler {
     void sendCookies(HttpServletRequest request, HttpURLConnection connection);
     void receiveCookies(HttpServletResponse response, HttpURLConnection cookiesSource);
 }

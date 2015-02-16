@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Created by vital on 14.02.15.
  */
-public class SecuredCookiesHandler implements CookiesRule {
+public class SecuredCookiesHandler implements CookiesHandler {
 
     static final String COOKIE_HTTP_HEADER = "Cookie";
     public static final String SET_COOKIE_HTTP_HEADER = "Set-Cookie";
@@ -17,7 +17,9 @@ public class SecuredCookiesHandler implements CookiesRule {
     @Override
     public void sendCookies(HttpServletRequest request, HttpURLConnection connection) {
         String cookies = request.getHeader(COOKIE_HTTP_HEADER);
-        connection.setRequestProperty(COOKIE_HTTP_HEADER, cookies);
+        if (cookies != null) {
+            connection.setRequestProperty(COOKIE_HTTP_HEADER, cookies);
+        }
     }
 
     @Override

@@ -9,8 +9,8 @@ public class CookiesHandlerFactory {
     final static NoCookiesHandler NO_COOKIES_HANDLER = new NoCookiesHandler();
     final static SecuredCookiesHandler SECURED_COOKIES_HANDLER = new SecuredCookiesHandler();
 
-    public CookiesRule getRule(HttpServletRequest request) {
-        String cookieParam = request.getParameter("cookie");
+    public CookiesHandler getRule(HttpServletRequest request) {
+        String cookieParam = request.getParameter("__cookies");
         if (cookieParam == null) {
             return NO_COOKIES_HANDLER;
         } else {

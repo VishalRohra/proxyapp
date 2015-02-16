@@ -7,7 +7,7 @@ import java.net.HttpURLConnection;
 /**
  * Created by vital on 14.02.15.
  */
-public class NoCookiesRule implements CookiesRule {
+public class NoCookiesHandler implements CookiesRule {
     @Override
     public void sendCookies(HttpServletRequest request, HttpURLConnection connection) {
         // do nothing

@@ -3,13 +3,16 @@ package ru.codeninja.proxyapp.cookies;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.HttpURLConnection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by vital on 14.02.15.
  */
-public class SecuredCookiesRule implements CookiesRule {
+public class SecuredCookiesHandler implements CookiesRule {
 
     static final String COOKIE_HTTP_HEADER = "Cookie";
+    public static final String SET_COOKIE_HTTP_HEADER = "Set-Cookie";
 
     @Override
     public void sendCookies(HttpServletRequest request, HttpURLConnection connection) {
@@ -19,7 +22,14 @@ public class SecuredCookiesRule implements CookiesRule {
 
     @Override
     public void receiveCookies(HttpServletResponse response, HttpURLConnection cookiesSource) {
-        String cookies = cookiesSource.getRequestProperty(COOKIE_HTTP_HEADER);
-        response.setHeader(COOKIE_HTTP_HEADER, cookies);
+        Map<String, List<String>> requestProperties = cookiesSource.getRequestProperties();
+        String currentUrl = cookiesSource.getURL().toString();
+        List<String> cookies = requestProperties.get(SET_COOKIE_HTTP_HEADER);
+        if (cookies != null) {
+            for (String cookie : cookies) {
+                response.addHeader(SET_COOKIE_HTTP_HEADER, CookieProtector.neutralize(currentUrl, cookie));
+            }
+        }
+
     }
 }

@@ -24,7 +24,7 @@ public class SecuredCookiesHandler implements CookiesHandler {
 
     @Override
     public void receiveCookies(HttpServletResponse response, HttpURLConnection cookiesSource) {
-        Map<String, List<String>> requestProperties = cookiesSource.getRequestProperties();
+        Map<String, List<String>> requestProperties = cookiesSource.getHeaderFields();
         String currentUrl = cookiesSource.getURL().toString();
         List<String> cookies = requestProperties.get(SET_COOKIE_HTTP_HEADER);
         if (cookies != null) {

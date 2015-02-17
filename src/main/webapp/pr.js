@@ -175,7 +175,29 @@
             return $setAttributeNodeNS.call(this, attr);
         };
     })(Node.prototype.appendChild, Node.prototype.insertBefore, Node.prototype.replaceChild,
-        Element.prototype.setAttribute, Element.prototype.setAttributeNS, Element.prototype.setAttributeNode, Element.prototype.setAttributeNodeNS);
+        Element.prototype.setAttribute, Element.prototype.setAttributeNS,
+        Element.prototype.setAttributeNode, Element.prototype.setAttributeNodeNS);
+
+    (function ($createElement, $createElementNS) {
+        document.createElement = function(tagName) {
+            var elm = $createElement.call(this, tagName);
+            if (tagName == "img") {
+                var desc = {
+                    set: function (newVal) {
+                        desc.value = $url(newVal);
+                        Object.defineProperty(elm, "src", desc)
+                    },
+                    get: function () {
+                        return desc.value;
+                    },
+                    value: "", writable: false, enumerable: true, configurable: true
+                };
+                Object.defineProperty(elm, "src", desc)
+            }
+
+            return elm;
+        };
+    })(document.createElement, document.createElementNS);
 
 
     if (MutationObserver) {
@@ -189,70 +211,78 @@
         observer.observe(document, config);
     }
 
-    function wrap(object) {
+    var wrap = function (object) {
         console.log("stub " + object.name);
-        return function(args) {
-            var $this = this;
-            var _origin = new object();
-            for (prop in _origin) {
-                if (typeof _origin[prop] == 'function') {
-                    var originalMethod = _origin[prop];
-                    var method = function() {
-                        console.log("method " + prop + " is called");
-                        updateProps(this);
-                        return originalMethod.apply(_origin, arguments);
-                    }
+
+        var _origin;
+
+        function copy_prop(name, from, to) {
+            if (from[name] != undefined && from[name] != to[name]) {
+                if (is_url_prop(name)) {
+                    var url = $url(from[name]);
+                    to[name] = url;
+                    from[name] = url;
                 } else {
-                    var val = _origin[prop];
-                    if (val != 0 && val != "" && val != undefined) {
-                        copy_prop(prop, _origin, this);
+                    try {
+                        to[name] = from[name];
+                    } catch (e) {
+                        //console.log(e);
                     }
                 }
             }
+        }
 
-            function copy_prop(name, from, to) {
-                if (from[name] != undefined && from[name] != to[name]) {
-                    if (is_url_prop(name)) {
-                        var url = $url(from[name]);
-                        to[name] = url;
-                        from[name] = url;
+        function updateProps(stub) {
+            for(prop in _origin) {
+                if (typeof _origin[prop] != 'function') {
+                    copy_prop(prop, stub, _origin);
+                }
+            }
+        }
+
+        var _returnOrigin = function() {
+            updateProps(this);
+            return _origin;
+        };
+
+        if (typeof object == 'function') {
+            return function() {
+                var $this = this;
+                _origin = new object(arguments);
+                for (prop in _origin) {
+                    if (typeof _origin[prop] == 'function') {
+                        var originalMethod = _origin[prop];
+                        var method = function() {
+                            console.log("method " + prop + " is called");
+                            updateProps(this);
+                            return originalMethod.apply(_origin, arguments);
+                        }
                     } else {
-                        try {
-                            to[name] = from[name];
-                        } catch (e) {
-                            //console.log(e);
+                        var val = _origin[prop];
+                        if (val != 0 && val != "" && val != undefined) {
+                            copy_prop(prop, _origin, this);
                         }
                     }
                 }
-            }
 
-            function updateProps(stub) {
-                for(prop in _origin) {
-                    if (typeof _origin[prop] != 'function') {
-                        copy_prop(prop, stub, _origin);
-                    }
-                }
-            }
+                this._returnOrigin = _returnOrigin;
 
-            this._returnOrigin = function() {
-                updateProps($this);
-                return _origin;
             };
+        } else if (typeof object == 'object') {
 
-            window.setTimeout(function () {
-                updateProps($this);
-            }, 1000);
+        }
+    };
 
-        };
-    }
-
-    function unwrap(object) {
+    var unwrap = function (object) {
         if (object instanceof wImage) {
             return object._returnOrigin();
         } else {
             return object;
         }
-    }
+    };
+
+    window.wrap = wrap;
+    window.unwrap = unwrap;
 
     // todo intercept an insertion of this object into DOM
     window.Image = wImage = wrap(window.Image);

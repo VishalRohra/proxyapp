@@ -1,12 +1,9 @@
 package ru.codeninja.proxyapp.url;
 
-import java.io.UnsupportedEncodingException;
+import ru.codeninja.proxyapp.cookies.CookiesHandler;
+
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,6 +17,7 @@ public class UrlEncoder {
     private URI currentUrl;
     private String baseUrl;
     private String baseHostUrl;
+    private boolean hasCookies = false;
 
     public UrlEncoder(String currentUrl) {
         try {
@@ -28,11 +26,13 @@ public class UrlEncoder {
             l.log(Level.WARNING, "cannot parse current url", e);
         }
 
+        hasCookies = currentUrl.contains(CookiesHandler.COOKIES_ON_PARAM);
         makeBaseUrl(this.currentUrl);
     }
 
     private void makeBaseUrl(URI currentUrl) {
         String parentPath = currentUrl.getPath();
+
         if (!parentPath.endsWith("/")) {
             parentPath = currentUrl.resolve(".").getPath();
         }
@@ -48,6 +48,24 @@ public class UrlEncoder {
                 .replaceAll("&#47;", "/")
                 .replaceAll("%2F", "/")
                 .replaceFirst("%3A", ":");
+    }
+
+    private String addCookiesParam(String url) {
+        String result = url;
+        if (hasCookies && url.contains(baseHostUrl)) {
+            StringBuffer buff = new StringBuffer(url);
+            if (url.contains("?")) {
+                buff.append("&");
+                buff.append(CookiesHandler.COOKIES_ON_PARAM);
+            } else {
+                buff.append("?");
+                buff.append(CookiesHandler.COOKIES_ON_PARAM);
+            }
+
+            result = buff.toString();
+        }
+
+        return result;
     }
 
     public String encode(String url) {
@@ -70,6 +88,6 @@ public class UrlEncoder {
         }
 
         //todo url escaping
-        return result;
+        return addCookiesParam(result);
     }
 }

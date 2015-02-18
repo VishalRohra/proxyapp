@@ -29,5 +29,9 @@ public class UrlDecoderTest {
         assertEquals(urlDecoder.decode("/s/google.com:8080/test?q=abc123&test1=ab123%32"), "https://google.com:8080/test?q=abc123&test1=ab123%32");
         assertEquals(urlDecoder.decode("/"), "/");
         assertEquals(urlDecoder.decode(""), "");
+        assertEquals(urlDecoder.decode("/google.com/test?__cookies"), "http://google.com/test");
+        assertEquals(urlDecoder.decode("/s/google.com/test?__cookies"), "https://google.com/test");
+        assertEquals(urlDecoder.decode("/google.com/?__cookies"), "http://google.com/");
+        assertEquals(urlDecoder.decode("/google.com?__cookies"), "http://google.com");
     }
 }

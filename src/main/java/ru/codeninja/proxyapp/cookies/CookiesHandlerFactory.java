@@ -10,7 +10,7 @@ public class CookiesHandlerFactory {
     final static SecuredCookiesHandler SECURED_COOKIES_HANDLER = new SecuredCookiesHandler();
 
     public CookiesHandler getRule(HttpServletRequest request) {
-        String cookieParam = request.getParameter("__cookies");
+        String cookieParam = request.getParameter(CookiesHandler.COOKIES_ON_PARAM);
         if (cookieParam == null) {
             return NO_COOKIES_HANDLER;
         } else {

@@ -2,10 +2,11 @@ package ru.codeninja.proxyapp.response.modify;
 
 import org.junit.Before;
 import org.junit.Test;
+import ru.codeninja.proxyapp.url.CurrentUrl;
 
 import java.io.*;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class CssContentModifierTest {
     public static final String SOURCE_FILE = "ru/codeninja/proxyapp/response/modify/style.css";
@@ -23,7 +24,7 @@ public class CssContentModifierTest {
 
         StringWriter writer = new StringWriter();
         PrintWriter printWriter = new PrintWriter(writer);
-        modifier.modify("http://some_page.com/test/", bufferedReader, printWriter);
+        modifier.modify(new CurrentUrl("http://some_page.com/test/"), bufferedReader, printWriter);
         printWriter.flush();
 
         BufferedReader expectBufferReader = getBufferedReader(RESULT_FILE);

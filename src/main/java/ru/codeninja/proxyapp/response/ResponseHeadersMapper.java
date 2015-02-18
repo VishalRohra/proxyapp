@@ -1,7 +1,7 @@
 package ru.codeninja.proxyapp.response;
 
-import ru.codeninja.proxyapp.connection.HttpConnection;
-import ru.codeninja.proxyapp.url.UrlEncoder;
+import ru.codeninja.proxyapp.connection.ProxyConnection;
+import ru.codeninja.proxyapp.url.CurrentUrl;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -15,7 +15,7 @@ public class ResponseHeadersMapper {
     public static final String CSP_POLICY = "default-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self' data:;";
     private static String[] acceptedHeaders = {"content-type", "expires", "last-modified"};
 
-    public void setHeaders(HttpServletResponse response, HttpConnection headerSource) throws IOException {
+    public void setHeaders(HttpServletResponse response, ProxyConnection headerSource) throws IOException {
         response.setStatus(headerSource.conn.getResponseCode());
 
         for (String headerName : acceptedHeaders) {
@@ -32,8 +32,8 @@ public class ResponseHeadersMapper {
 
         String redirectLocation = headerSource.conn.getHeaderField("location");
         if (redirectLocation != null) {
-            UrlEncoder urlEncoder = new UrlEncoder(headerSource.conn.getURL().getPath());
-            response.setHeader("Location", urlEncoder.encode(redirectLocation));
+            CurrentUrl currentUrl = headerSource.getCurrentUrl();
+            response.setHeader("Location", currentUrl.encodeUrl(redirectLocation));
         }
     }
 }

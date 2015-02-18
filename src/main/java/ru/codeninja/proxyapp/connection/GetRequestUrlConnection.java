@@ -14,21 +14,22 @@ import java.util.logging.Level;
 public class GetRequestUrlConnection extends AbstractUrlConnection implements UrlConnection {
 
     @Override
-    public HttpConnection connect(String url, HttpServletRequest request) {
-        HttpURLConnection conn = null;
-
+    public ProxyConnection connect(String url, HttpServletRequest request) {
+        ProxyConnection proxyConnection = null;
         try {
             URL urlAddress = new URL(url);
-            conn = (HttpURLConnection) urlAddress.openConnection();
+            HttpURLConnection conn = (HttpURLConnection) urlAddress.openConnection();
 
             conn.setRequestMethod(HttpMethod.GET.getName());
 
             setBasicHeaders(request, conn);
 
+            proxyConnection = new ProxyConnection(conn, request.getParameter(CookiesHandler.COOKIES_ON_PARAM) != null);
+
         } catch (IOException e) {
             l.log(Level.WARNING, e.getMessage(), e);
         }
 
-        return new HttpConnection(conn, request.getParameter(CookiesHandler.COOKIES_ON_PARAM) != null);
+        return proxyConnection;
     }
 }

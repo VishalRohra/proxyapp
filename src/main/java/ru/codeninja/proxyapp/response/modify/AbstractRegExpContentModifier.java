@@ -1,6 +1,6 @@
 package ru.codeninja.proxyapp.response.modify;
 
-import ru.codeninja.proxyapp.url.UrlEncoder;
+import ru.codeninja.proxyapp.url.CurrentUrl;
 
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -13,7 +13,7 @@ public class AbstractRegExpContentModifier {
 
     protected final Logger l = Logger.getLogger(this.getClass().getName());
 
-    protected StringBuffer replace(Pattern[] patterns, String line, UrlEncoder urlEncoder) {
+    protected StringBuffer replace(Pattern[] patterns, String line, CurrentUrl currentUrl) {
         StringBuffer lineBuff = new StringBuffer(line);
         for (Pattern pattern : patterns) {
             Matcher matcher = pattern.matcher(lineBuff);
@@ -22,7 +22,7 @@ public class AbstractRegExpContentModifier {
             StringBuffer str = new StringBuffer();
             while (matcher.find()) {
                 str.append(lineBuff.substring(prevPos, matcher.start(1)));
-                str.append(urlEncoder.encode(matcher.group(1)));
+                str.append(currentUrl.encodeUrl(matcher.group(1)));
                 prevPos = matcher.end(1);
             }
 

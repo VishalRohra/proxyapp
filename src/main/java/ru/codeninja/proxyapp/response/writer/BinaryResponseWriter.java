@@ -1,6 +1,6 @@
 package ru.codeninja.proxyapp.response.writer;
 
-import ru.codeninja.proxyapp.connection.HttpConnection;
+import ru.codeninja.proxyapp.connection.ProxyConnection;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +16,7 @@ public class BinaryResponseWriter implements ResponseWriter {
     private static final int READ_BUFFER_SIZE = 1024;
 
     @Override
-    public void sendResponse(HttpConnection connection, HttpServletResponse output) throws IOException {
+    public void sendResponse(ProxyConnection connection, HttpServletResponse output) throws IOException {
         InputStream inputStream = connection.conn.getInputStream();
 
         byte[] buff = new byte[READ_BUFFER_SIZE];

@@ -1,6 +1,6 @@
 package ru.codeninja.proxyapp.response.writer;
 
-import ru.codeninja.proxyapp.connection.HttpConnection;
+import ru.codeninja.proxyapp.connection.ProxyConnection;
 import ru.codeninja.proxyapp.response.modify.HtmlContentModifier;
 
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +13,7 @@ public class HtmlResponseWriter extends AbstractTextResponseWriter {
     final static HtmlContentModifier HTML_CONTENT_MODIFIER = new HtmlContentModifier();
 
     @Override
-    public void sendResponse(HttpConnection connection, HttpServletResponse output) throws IOException {
+    public void sendResponse(ProxyConnection connection, HttpServletResponse output) throws IOException {
         sendResponse(HTML_CONTENT_MODIFIER, connection, output);
     }
 

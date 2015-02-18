@@ -12,14 +12,20 @@ import java.util.logging.Logger;
  *
  * @author Vitaliy Mayorov
  */
-public class UrlEncoder {
+public class CurrentUrl {
     private final Logger l = Logger.getLogger(this.getClass().getName());
     private URI currentUrl;
     private String baseUrl;
     private String baseHostUrl;
     private boolean hasCookies = false;
 
-    public UrlEncoder(String currentUrl) {
+    public CurrentUrl(String currentUrl) {
+        this(currentUrl, false);
+    }
+
+    public CurrentUrl(String currentUrl, boolean isCookiesOn) {
+        hasCookies = isCookiesOn;
+
         try {
             this.currentUrl = new URI(currentUrl);
         } catch (URISyntaxException e) {
@@ -68,7 +74,7 @@ public class UrlEncoder {
         return result;
     }
 
-    public String encode(String url) {
+    public String encodeUrl(String url) {
         String result = ""; //todo make a default page
 
         url = decodeSpecialChars(url);

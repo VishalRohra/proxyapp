@@ -19,8 +19,8 @@ import java.util.logging.Level;
 public class PostRequestUrlConnection extends AbstractUrlConnection implements UrlConnection {
 
     @Override
-    public HttpConnection connect(String url, HttpServletRequest request) {
-        HttpURLConnection conn = null;
+    public ProxyConnection connect(String url, HttpServletRequest request) {
+        ProxyConnection proxyConnection = null;
 
         try {
             StringBuffer postData = new StringBuffer();
@@ -40,7 +40,7 @@ public class PostRequestUrlConnection extends AbstractUrlConnection implements U
             }
 
             URL urlAddress = new URL(url);
-            conn = (HttpURLConnection) urlAddress.openConnection();
+            HttpURLConnection conn = (HttpURLConnection) urlAddress.openConnection();
 
             conn.setDoOutput(true);
             conn.setRequestMethod(HttpMethod.POST.getName());
@@ -56,10 +56,12 @@ public class PostRequestUrlConnection extends AbstractUrlConnection implements U
                 os.write(postData.toString().getBytes());
             }
 
+            proxyConnection = new ProxyConnection(conn, request.getParameter(CookiesHandler.COOKIES_ON_PARAM) != null);
+
         } catch (IOException e) {
             l.log(Level.WARNING, e.getMessage(), e);
         }
 
-        return new HttpConnection(conn, request.getParameter(CookiesHandler.COOKIES_ON_PARAM) != null);
+        return proxyConnection;
     }
 }

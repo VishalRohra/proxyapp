@@ -1,6 +1,6 @@
 package ru.codeninja.proxyapp.cookies;
 
-import ru.codeninja.proxyapp.connection.HttpConnection;
+import ru.codeninja.proxyapp.connection.ProxyConnection;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,12 +10,12 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class NoCookiesHandler implements CookiesHandler {
     @Override
-    public void sendCookies(HttpServletRequest request, HttpConnection connection) {
+    public void sendCookies(HttpServletRequest request, ProxyConnection connection) {
         // do nothing
     }
 
     @Override
-    public void receiveCookies(HttpServletResponse response, HttpConnection cookiesSource) {
+    public void receiveCookies(HttpServletResponse response, ProxyConnection cookiesSource) {
         // do nothing
     }
 }

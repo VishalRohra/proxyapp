@@ -1,12 +1,11 @@
 package ru.codeninja.proxyapp.response.modify;
 
-import ru.codeninja.proxyapp.url.UrlEncoder;
+import ru.codeninja.proxyapp.url.CurrentUrl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,13 +26,12 @@ public class HtmlContentModifier extends AbstractRegExpContentModifier implement
     final static Pattern HEAD = Pattern.compile("<head([\\s]*|[\\s]+[^>]+)>");
 
     @Override
-    public void modify(String currentUrl, BufferedReader inputReader, PrintWriter outputStream) {
+    public void modify(CurrentUrl currentUrl, BufferedReader inputReader, PrintWriter outputStream) {
         String line;
 
         try {
-            UrlEncoder urlEncoder = new UrlEncoder(currentUrl);
             while ((line = inputReader.readLine()) != null) {
-                StringBuffer lineBuff = replace(patterns, line, urlEncoder);
+                StringBuffer lineBuff = replace(patterns, line, currentUrl);
 
                 Matcher headMatcher = HEAD.matcher(lineBuff);
                 while (headMatcher.find()) {

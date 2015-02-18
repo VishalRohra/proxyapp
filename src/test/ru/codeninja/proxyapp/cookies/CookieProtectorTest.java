@@ -1,12 +1,13 @@
 package ru.codeninja.proxyapp.cookies;
 
 import org.junit.Test;
+import ru.codeninja.proxyapp.url.CurrentUrl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class CookieProtectorTest {
 
-    public static final String PATH = "http://test.com";
+    public static final CurrentUrl PATH = new CurrentUrl("http://test.com");
 
     @Test
     public void test() {

@@ -1,5 +1,7 @@
 package ru.codeninja.proxyapp.response.modify;
 
+import ru.codeninja.proxyapp.url.CurrentUrl;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,7 +15,7 @@ public class JavascriptContentModifier implements ContentModifier {
     protected final Logger l = Logger.getLogger(this.getClass().getName());
 
     @Override
-    public void modify(String currentUrl, BufferedReader inputReader, PrintWriter outputStream) {
+    public void modify(CurrentUrl currentUrl, BufferedReader inputReader, PrintWriter outputStream) {
         String line;
 
         try {

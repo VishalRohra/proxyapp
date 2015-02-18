@@ -1,6 +1,6 @@
 package ru.codeninja.proxyapp.response.modify;
 
-import ru.codeninja.proxyapp.url.UrlEncoder;
+import ru.codeninja.proxyapp.url.CurrentUrl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,13 +17,12 @@ public class CssContentModifier extends AbstractRegExpContentModifier implements
             Pattern.compile("@import[\\s]*['\"]?([^'^\"^;]+)['\"]?"), // css @import
     };
     @Override
-    public void modify(String currentUrl, BufferedReader inputReader, PrintWriter outputStream) {
+    public void modify(CurrentUrl currentUrl, BufferedReader inputReader, PrintWriter outputStream) {
         String line;
 
         try {
-            UrlEncoder urlEncoder = new UrlEncoder(currentUrl);
             while ((line = inputReader.readLine()) != null) {
-                StringBuffer lineBuff = replace(patterns, line, urlEncoder);
+                StringBuffer lineBuff = replace(patterns, line, currentUrl);
 
                 outputStream.println(lineBuff);
             }

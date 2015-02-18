@@ -1,6 +1,6 @@
 package ru.codeninja.proxyapp.response.writer;
 
-import ru.codeninja.proxyapp.connection.HttpConnection;
+import ru.codeninja.proxyapp.connection.ProxyConnection;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -11,5 +11,5 @@ import java.io.IOException;
  * @author Vitaliy Mayorov
  */
 public interface ResponseWriter {
-    void sendResponse(HttpConnection connection, HttpServletResponse output) throws IOException;
+    void sendResponse(ProxyConnection connection, HttpServletResponse output) throws IOException;
 }

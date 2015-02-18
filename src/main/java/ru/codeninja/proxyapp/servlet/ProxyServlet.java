@@ -1,6 +1,6 @@
 package ru.codeninja.proxyapp.servlet;
 
-import ru.codeninja.proxyapp.connection.HttpConnection;
+import ru.codeninja.proxyapp.connection.ProxyConnection;
 import ru.codeninja.proxyapp.cookies.CookiesHandler;
 import ru.codeninja.proxyapp.cookies.CookiesHandlerFactory;
 import ru.codeninja.proxyapp.response.ResponseHeadersMapper;
@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.util.logging.Logger;
 
 /**
@@ -59,7 +58,7 @@ public class ProxyServlet extends HttpServlet {
     private void processRequest(UrlConnection urlConnection, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String url = requestParamParser.getUrl(req);
 
-        HttpConnection connection = urlConnection.connect(url, req);
+        ProxyConnection connection = urlConnection.connect(url, req);
         CookiesHandler cookiesHandler = cookiesHandlerFactory.getRule(req);
         cookiesHandler.sendCookies(req, connection);
         if (connection == null) {

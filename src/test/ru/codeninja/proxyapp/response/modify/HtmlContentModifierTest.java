@@ -2,6 +2,7 @@ package ru.codeninja.proxyapp.response.modify;
 
 import org.junit.Before;
 import org.junit.Test;
+import ru.codeninja.proxyapp.url.CurrentUrl;
 
 import java.io.*;
 
@@ -23,7 +24,7 @@ public class HtmlContentModifierTest {
 
         StringWriter writer = new StringWriter();
         PrintWriter printWriter = new PrintWriter(writer);
-        modifier.modify("http://some_page.com/test/", bufferedReader, printWriter);
+        modifier.modify(new CurrentUrl("http://some_page.com/test/"), bufferedReader, printWriter);
         printWriter.flush();
 
         BufferedReader expectBufferReader = getBufferedReader(RESULT_FILE);

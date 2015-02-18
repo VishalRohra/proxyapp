@@ -214,68 +214,68 @@
     var wrap = function (object) {
         console.log("stub " + object.name);
 
-        var _origin;
-
-        function copy_prop(name, from, to) {
-            if (from[name] != undefined && from[name] != to[name]) {
-                if (is_url_prop(name)) {
-                    var url = $url(from[name]);
-                    to[name] = url;
-                    from[name] = url;
-                } else {
-                    try {
-                        to[name] = from[name];
-                    } catch (e) {
-                        //console.log(e);
-                    }
-                }
-            }
-        }
-
-        function updateProps(stub) {
-            for(prop in _origin) {
-                if (typeof _origin[prop] != 'function') {
-                    copy_prop(prop, stub, _origin);
-                }
-            }
-        }
+        var _origin = object;
 
         var _returnOrigin = function() {
-            updateProps(this);
+            for (var prop in this) {
+                if (!_origin[prop] && prop != "_real") {
+                    console.log("copy new property " + prop);
+                    _origin[prop] = this[prop];
+                }
+            }
             return _origin;
         };
 
+        function reflect(from, to) {
+            for (var prop in from) {
+                if (typeof from[prop] == 'function') {
+                    to[prop] = (function(method, prop) {
+                        return function() {
+                            console.log("method " + prop + " is called");
+                            return method.apply(from, arguments);
+                        }
+                    })(from[prop], prop);
+                } else {
+                    (function(prop) {
+                        Object.defineProperty(to, prop, {
+                            set: function(newVal) {
+                                console.log("set property " + prop + " to " + newVal);
+                                if (is_url_prop(prop)) {
+                                    from[prop] = $url(newVal);
+                                } else {
+                                    from[prop] = newVal;
+                                }
+                            },
+                            get: function() {
+                                console.log("get property " + prop);
+                                return from[prop];
+                            }
+                        });
+                    })(prop);
+                }
+            }
+
+            return to;
+        }
+
         if (typeof object == 'function') {
             return function() {
-                var $this = this;
                 _origin = new object(arguments);
-                for (prop in _origin) {
-                    if (typeof _origin[prop] == 'function') {
-                        var originalMethod = _origin[prop];
-                        var method = function() {
-                            console.log("method " + prop + " is called");
-                            updateProps(this);
-                            return originalMethod.apply(_origin, arguments);
-                        }
-                    } else {
-                        var val = _origin[prop];
-                        if (val != 0 && val != "" && val != undefined) {
-                            copy_prop(prop, _origin, this);
-                        }
-                    }
-                }
-
-                this._returnOrigin = _returnOrigin;
-
+                this._real = _returnOrigin;
+                reflect(_origin, this);
             };
         } else if (typeof object == 'object') {
+            var proxy = {
+                _real: _returnOrigin
+            };
 
+            return reflect(_origin, proxy);
         }
     };
 
     var unwrap = function (object) {
         if (object instanceof wImage) {
-            return object._returnOrigin();
+            return object._real();
         } else {
             return object;
         }

@@ -1,5 +1,6 @@
 package ru.codeninja.proxyapp.response;
 
+import ru.codeninja.proxyapp.connection.HttpConnection;
 import ru.codeninja.proxyapp.response.writer.*;
 
 import java.net.HttpURLConnection;
@@ -13,8 +14,8 @@ public class ResponseWriterFactory {
     final static CssResponseWriter CSS_RESPONSE_WRITER = new CssResponseWriter();
     final static JavascriptResponseWriter JAVASCRIPT_RESPONSE_WRITER = new JavascriptResponseWriter();
 
-    public ResponseWriter get(HttpURLConnection connection) {
-        String contentType = connection.getContentType();
+    public ResponseWriter get(HttpConnection connection) {
+        String contentType = connection.conn.getContentType();
 
         if (contentType.contains("text/html")) {
             return HTML_RESPONSE_WRITER;

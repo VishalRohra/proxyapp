@@ -1,8 +1,9 @@
 package ru.codeninja.proxyapp.cookies;
 
+import ru.codeninja.proxyapp.connection.HttpConnection;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Map;
 
@@ -15,17 +16,17 @@ public class SecuredCookiesHandler implements CookiesHandler {
     public static final String SET_COOKIE_HTTP_HEADER = "Set-Cookie";
 
     @Override
-    public void sendCookies(HttpServletRequest request, HttpURLConnection connection) {
+    public void sendCookies(HttpServletRequest request, HttpConnection connection) {
         String cookies = request.getHeader(COOKIE_HTTP_HEADER);
         if (cookies != null) {
-            connection.setRequestProperty(COOKIE_HTTP_HEADER, cookies);
+            connection.conn.setRequestProperty(COOKIE_HTTP_HEADER, cookies);
         }
     }
 
     @Override
-    public void receiveCookies(HttpServletResponse response, HttpURLConnection cookiesSource) {
-        Map<String, List<String>> requestProperties = cookiesSource.getHeaderFields();
-        String currentUrl = cookiesSource.getURL().toString();
+    public void receiveCookies(HttpServletResponse response, HttpConnection cookiesSource) {
+        Map<String, List<String>> requestProperties = cookiesSource.conn.getHeaderFields();
+        String currentUrl = cookiesSource.conn.getURL().toString();
         List<String> cookies = requestProperties.get(SET_COOKIE_HTTP_HEADER);
         if (cookies != null) {
             for (String cookie : cookies) {

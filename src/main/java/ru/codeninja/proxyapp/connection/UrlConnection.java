@@ -7,5 +7,5 @@ import java.net.HttpURLConnection;
  * Created by vital on 11.02.15.
  */
 public interface UrlConnection {
-    HttpURLConnection connect(String url, HttpServletRequest request);
+    HttpConnection connect(String url, HttpServletRequest request);
 }

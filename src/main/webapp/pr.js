@@ -182,17 +182,15 @@
         document.createElement = function(tagName) {
             var elm = $createElement.call(this, tagName);
             if (tagName == "img") {
-                var desc = {
-                    set: function (newVal) {
-                        desc.value = $url(newVal);
-                        Object.defineProperty(elm, "src", desc)
-                    },
-                    get: function () {
-                        return desc.value;
-                    },
-                    value: "", writable: false, enumerable: true, configurable: true
-                };
-                Object.defineProperty(elm, "src", desc)
+                elm = wrap(elm);
+            }
+
+            return elm;
+        };
+        document.createElementNS = function(ns, tagName) {
+            var elm = $createElementNS.call(this, ns, tagName);
+            if (tagName == "img") {
+                elm = wrap(elm);
             }
 
             return elm;

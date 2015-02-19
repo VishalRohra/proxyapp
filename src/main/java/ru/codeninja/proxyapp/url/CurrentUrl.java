@@ -32,7 +32,6 @@ public class CurrentUrl {
             l.log(Level.WARNING, "cannot parse current url", e);
         }
 
-        hasCookies = currentUrl.contains(CookiesHandler.COOKIES_ON_PARAM);
         makeBaseUrl(this.currentUrl);
     }
 

@@ -1,6 +1,7 @@
 package ru.codeninja.proxyapp.connection;
 
 import ru.codeninja.proxyapp.cookies.CookiesHandler;
+import ru.codeninja.proxyapp.request.RequestedUrl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
@@ -19,11 +20,12 @@ import java.util.logging.Level;
 public class PostRequestUrlConnection extends AbstractUrlConnection implements UrlConnection {
 
     @Override
-    public ProxyConnection connect(String url, HttpServletRequest request) {
+    public ProxyConnection connect(RequestedUrl url) {
         ProxyConnection proxyConnection = null;
 
         try {
             StringBuffer postData = new StringBuffer();
+            HttpServletRequest request = url.getRequest();
             for (String paramName : (List<String>) Collections.list(request.getParameterNames())) {
                 if (postData.length() > 0) {
                     postData.append("&");
@@ -39,7 +41,7 @@ public class PostRequestUrlConnection extends AbstractUrlConnection implements U
                 rawData.append(buff, 0, count);
             }
 
-            URL urlAddress = new URL(url);
+            URL urlAddress = new URL(url.getUrl());
             HttpURLConnection conn = (HttpURLConnection) urlAddress.openConnection();
 
             conn.setDoOutput(true);

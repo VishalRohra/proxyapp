@@ -6,7 +6,8 @@ import ru.codeninja.proxyapp.connection.UrlConnection;
 import ru.codeninja.proxyapp.connection.UrlConnectionFactory;
 import ru.codeninja.proxyapp.cookies.CookiesHandler;
 import ru.codeninja.proxyapp.cookies.CookiesHandlerFactory;
-import ru.codeninja.proxyapp.response.RequestParamParser;
+import ru.codeninja.proxyapp.request.RequestParamParser;
+import ru.codeninja.proxyapp.request.RequestedUrl;
 import ru.codeninja.proxyapp.response.ResponseHeadersMapper;
 import ru.codeninja.proxyapp.response.ResponseWriterFactory;
 import ru.codeninja.proxyapp.response.writer.ResponseWriter;
@@ -56,9 +57,9 @@ public class ProxyServlet extends HttpServlet {
     }
 
     private void processRequest(UrlConnection urlConnection, HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String url = requestParamParser.getUrl(req);
+        RequestedUrl url = requestParamParser.getUrl(req);
 
-        ProxyConnection connection = urlConnection.connect(url, req);
+        ProxyConnection connection = urlConnection.connect(url);
         if (connection == null) {
             //todo implement an error page
         } else {

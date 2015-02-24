@@ -71,7 +71,11 @@
     }
 
     function is_safe_url(url) {
-        return typeof url != "string" || url.indexOf("/s/") === 0 || url.indexOf(baseHost) === 0 || url.indexOf("data:image") === 0 || url.indexOf("about:blank") === 0 || url.indexOf("#") === 0 || url.match(/^\/[\w\.\:\@\-]{3,}\.[\w]{2,5}(:[0-9]+)?/g);
+        return typeof url != "string" || url.indexOf("/s/") === 0
+            || url.indexOf(baseHost) === 0 || url.indexOf("data:image") === 0
+            || url.indexOf("about:blank") === 0 || url.indexOf("#") === 0
+            || url.match(/^\/[\w\.\:\@\-]{3,}\.[\w]{2,5}(:[0-9]+)?/g)
+            || url.indexOf(window.location.origin) === 0;
     }
 
     function $url(url) {
@@ -198,15 +202,31 @@
     })(document.createElement, document.createElementNS);
 
 
-    if (MutationObserver) {
-        var observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                console.log(mutation.type);
+    if (window.MutationObserver) {
+        document.addEventListener("DOMContentLoaded", function() {
+            var observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    console.log(mutation.type);
+                    if (mutation.type == "childList") {
+                        var addedNodes = mutation.addedNodes;
+                        if (addedNodes) {
+                            for (var i = 0; i < addedNodes.length; i++) {
+                                var node = addedNodes[i];
+                                protect_node(node);
+                            }
+                        }
+                    } else if (mutation.type == "attributes") {
+                        var url = mutation.target[mutation.attributeName];
+                        if (!is_safe_url(url)) {
+                            mutation.target[mutation.attributeName] = $url(url);
+                        }
+                    }
+                });
             });
-        });
 
-        var config = { attributes: true, characterData: true, subtree: true, attributeFilter: ["src", "href", "action"] };
-        observer.observe(document, config);
+            var config = {childList: true, subtree: true, attributeFilter: ["src", "href", "action"] };
+            observer.observe(document, config);
+        })
     }
 
     var wrap = function (object) {

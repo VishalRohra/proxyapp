@@ -8,14 +8,15 @@ import java.io.*;
 
 import static org.junit.Assert.assertEquals;
 
-public class HtmlContentModifierTest {
-    public static final String SOURCE_FILE = "ru/codeninja/proxyapp/response/modify/page.html";
-    public static final String RESULT_FILE = "ru/codeninja/proxyapp/response/modify/page_expect.html";
-    HtmlContentModifier modifier;
+public class JavascriptContentModifierTest {
+
+    public static final String SOURCE_FILE = "script.js";
+    public static final String RESULT_FILE = "script_expect.js";
+    JavascriptContentModifier modifier;
 
     @Before
     public void before() {
-        modifier = new HtmlContentModifier();
+        modifier = new JavascriptContentModifier();
     }
 
     @Test
@@ -24,7 +25,7 @@ public class HtmlContentModifierTest {
 
         StringWriter writer = new StringWriter();
         PrintWriter printWriter = new PrintWriter(writer);
-        modifier.modify(new CurrentUrl("http://some_page.com/test/"), bufferedReader, printWriter);
+        modifier.modify(new CurrentUrl("http://some_page.com/test/", false), bufferedReader, printWriter);
         printWriter.flush();
 
         BufferedReader expectBufferReader = getBufferedReader(RESULT_FILE);
@@ -47,5 +48,4 @@ public class HtmlContentModifierTest {
         InputStream in = classLoader.getResourceAsStream(filePath);
         return new BufferedReader(new InputStreamReader(in));
     }
-
 }

@@ -9,8 +9,8 @@ import java.io.*;
 import static org.junit.Assert.assertEquals;
 
 public class CssContentModifierTest {
-    public static final String SOURCE_FILE = "ru/codeninja/proxyapp/response/modify/style.css";
-    public static final String RESULT_FILE = "ru/codeninja/proxyapp/response/modify/style_expect.css";
+    public static final String SOURCE_FILE = "style.css";
+    public static final String RESULT_FILE = "style_expect.css";
     CssContentModifier modifier;
 
     @Before

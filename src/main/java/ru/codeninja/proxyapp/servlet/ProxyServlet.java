@@ -59,7 +59,7 @@ public class ProxyServlet extends HttpServlet {
         if (connection == null) {
             //todo implement an error page
         } else {
-            responseHeadersManager.setHeaders(resp, connection);
+            responseHeadersManager.sendHeaders(resp, connection);
             //todo implement the header manager
 
             ResponseWriter responseWriter = responseWriterFactory.get(connection);

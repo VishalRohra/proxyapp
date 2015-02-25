@@ -35,7 +35,7 @@ public class GetRequestUrlConnection implements UrlConnection {
 
             proxyConnection = new ProxyConnection(conn, request.getParameter(CookieProtector.COOKIES_ON_PARAM) != null);
 
-            requestHeadersManager.setBasicHeaders(request, proxyConnection);
+            requestHeadersManager.sendHeaders(request, proxyConnection);
 
         } catch (IOException e) {
             l.log(Level.WARNING, e.getMessage(), e);

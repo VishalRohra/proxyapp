@@ -15,7 +15,7 @@ public class RequestHeadersManager {
 
     static String[] acceptedHeaders = {"Accept-Language", "Accept", "Accept-Encoding"};
 
-    public void setBasicHeaders(HttpServletRequest request, ProxyConnection proxyConnection) {
+    public void sendHeaders(HttpServletRequest request, ProxyConnection proxyConnection) {
         HttpURLConnection conn = proxyConnection.conn;
         conn.setRequestProperty(HTTP_HEADER_USER_AGENT, USER_AGENT);
         for (String headerName : acceptedHeaders) {

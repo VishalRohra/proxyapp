@@ -60,7 +60,7 @@ public class PostRequestUrlConnection implements UrlConnection {
 
             proxyConnection = new ProxyConnection(conn, request.getParameter(CookieProtector.COOKIES_ON_PARAM) != null);
 
-            requestHeadersManager.setBasicHeaders(request, proxyConnection);
+            requestHeadersManager.sendHeaders(request, proxyConnection);
 
             OutputStream os = conn.getOutputStream();
             if (rawData.length() > 0) {

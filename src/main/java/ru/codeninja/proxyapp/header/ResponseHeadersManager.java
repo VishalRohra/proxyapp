@@ -18,7 +18,7 @@ public class ResponseHeadersManager {
     static String[] acceptedHeaders = {"content-type", "expires", "last-modified"};
     static final String SET_COOKIE_HTTP_HEADER = "Set-Cookie";
 
-    public void setHeaders(HttpServletResponse response, ProxyConnection headerSource) throws IOException {
+    public void sendHeaders(HttpServletResponse response, ProxyConnection headerSource) throws IOException {
         response.setStatus(headerSource.conn.getResponseCode());
 
         for (String headerName : acceptedHeaders) {

@@ -49,7 +49,7 @@ public class ResponseHeadersManager {
         List<String> cookies = requestProperties.get(SET_COOKIE_HTTP_HEADER);
         if (cookies != null) {
             for (String cookie : cookies) {
-                response.addHeader(SET_COOKIE_HTTP_HEADER, CookieProtector.neutralize(cookiesSource.getCurrentUrl(), cookie));
+                response.addHeader(SET_COOKIE_HTTP_HEADER, CookiesProtector.neutralize(cookiesSource.getCurrentUrl(), cookie));
             }
         }
 

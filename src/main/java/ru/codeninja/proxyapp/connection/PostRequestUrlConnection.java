@@ -1,6 +1,6 @@
 package ru.codeninja.proxyapp.connection;
 
-import ru.codeninja.proxyapp.header.CookieProtector;
+import ru.codeninja.proxyapp.header.CookiesProtector;
 import ru.codeninja.proxyapp.header.RequestHeadersManager;
 import ru.codeninja.proxyapp.request.RequestedUrl;
 
@@ -58,7 +58,7 @@ public class PostRequestUrlConnection implements UrlConnection {
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setRequestProperty("Content-Length", String.valueOf(postData.length()));
 
-            proxyConnection = new ProxyConnection(conn, request.getParameter(CookieProtector.COOKIES_ON_PARAM) != null);
+            proxyConnection = new ProxyConnection(conn, request.getParameter(CookiesProtector.COOKIES_ON_PARAM) != null);
 
             requestHeadersManager.sendHeaders(request, proxyConnection);
 

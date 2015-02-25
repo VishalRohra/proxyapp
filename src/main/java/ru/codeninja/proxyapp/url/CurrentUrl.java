@@ -1,6 +1,6 @@
 package ru.codeninja.proxyapp.url;
 
-import ru.codeninja.proxyapp.header.CookieProtector;
+import ru.codeninja.proxyapp.header.CookiesProtector;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -61,10 +61,10 @@ public class CurrentUrl {
             StringBuffer buff = new StringBuffer(url);
             if (url.contains("?")) {
                 buff.append("&");
-                buff.append(CookieProtector.COOKIES_ON_PARAM);
+                buff.append(CookiesProtector.COOKIES_ON_PARAM);
             } else {
                 buff.append("?");
-                buff.append(CookieProtector.COOKIES_ON_PARAM);
+                buff.append(CookiesProtector.COOKIES_ON_PARAM);
             }
 
             result = buff.toString();

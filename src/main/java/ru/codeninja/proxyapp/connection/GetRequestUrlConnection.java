@@ -1,6 +1,6 @@
 package ru.codeninja.proxyapp.connection;
 
-import ru.codeninja.proxyapp.cookies.CookiesHandler;
+import ru.codeninja.proxyapp.header.CookieProtector;
 import ru.codeninja.proxyapp.header.RequestHeadersManager;
 import ru.codeninja.proxyapp.request.RequestedUrl;
 
@@ -33,9 +33,9 @@ public class GetRequestUrlConnection implements UrlConnection {
 
             conn.setRequestMethod(HttpMethod.GET.getName());
 
-            requestHeadersManager.setBasicHeaders(request, conn);
+            proxyConnection = new ProxyConnection(conn, request.getParameter(CookieProtector.COOKIES_ON_PARAM) != null);
 
-            proxyConnection = new ProxyConnection(conn, request.getParameter(CookiesHandler.COOKIES_ON_PARAM) != null);
+            requestHeadersManager.setBasicHeaders(request, proxyConnection);
 
         } catch (IOException e) {
             l.log(Level.WARNING, e.getMessage(), e);

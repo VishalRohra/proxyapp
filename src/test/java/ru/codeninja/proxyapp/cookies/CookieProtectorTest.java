@@ -1,6 +1,7 @@
 package ru.codeninja.proxyapp.cookies;
 
 import org.junit.Test;
+import ru.codeninja.proxyapp.header.CookieProtector;
 import ru.codeninja.proxyapp.url.CurrentUrl;
 
 import static org.junit.Assert.assertEquals;

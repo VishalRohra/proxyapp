@@ -1,4 +1,4 @@
-package ru.codeninja.proxyapp.cookies;
+package ru.codeninja.proxyapp.header;
 
 import ru.codeninja.proxyapp.url.CurrentUrl;
 
@@ -10,6 +10,8 @@ import java.util.List;
  * Created by vital on 16.02.15.
  */
 public class CookieProtector {
+    public static final String COOKIES_ON_PARAM = "__cookies";
+
     public static String neutralize(CurrentUrl currentUrl, String setCookieHeader) {
         StringBuffer result = new StringBuffer();
 

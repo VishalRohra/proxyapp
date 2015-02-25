@@ -56,10 +56,12 @@ public class ProxyServlet extends HttpServlet {
         RequestedUrl url = requestParamParser.getUrl(req);
         if (url == null) {
             //todo we're in the root
+            l.info("root page");
         } else {
             ProxyConnection connection = urlConnection.connect(url);
             if (connection == null) {
                 //todo implement an error page
+                l.warning("cannot connect an url");
             } else {
                 responseHeadersManager.sendHeaders(resp, connection);
                 //todo implement the header manager

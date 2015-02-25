@@ -10,9 +10,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.util.Collections;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,14 +30,7 @@ public class PostRequestUrlConnection implements UrlConnection {
         ProxyConnection proxyConnection = null;
 
         try {
-            StringBuffer postData = new StringBuffer();
             HttpServletRequest request = url.getRequest();
-            for (String paramName : (List<String>) Collections.list(request.getParameterNames())) {
-                if (postData.length() > 0) {
-                    postData.append("&");
-                }
-                postData.append(paramName + "=" + URLEncoder.encode(request.getParameter(paramName), "UTF-8"));
-            }
 
             BufferedReader reader = request.getReader();
             StringBuffer rawData = new StringBuffer();
@@ -56,7 +46,7 @@ public class PostRequestUrlConnection implements UrlConnection {
             conn.setDoOutput(true);
             conn.setRequestMethod(HttpMethod.POST.getName());
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            conn.setRequestProperty("Content-Length", String.valueOf(postData.length()));
+            conn.setRequestProperty("Content-Length", String.valueOf(rawData.length()));
 
             proxyConnection = new ProxyConnection(conn, request.getParameter(CookiesProtector.COOKIES_ON_PARAM) != null);
 
@@ -65,8 +55,6 @@ public class PostRequestUrlConnection implements UrlConnection {
             OutputStream os = conn.getOutputStream();
             if (rawData.length() > 0) {
                 os.write(rawData.toString().getBytes());
-            } else {
-                os.write(postData.toString().getBytes());
             }
 
 

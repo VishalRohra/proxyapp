@@ -6,11 +6,11 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import ru.codeninja.proxyapp.request.RequestParamParser;
+import ru.codeninja.proxyapp.request.RequestedUrl;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 /**
@@ -33,15 +33,23 @@ public class RequestParamParserTest {
 
     @Test
     public void empty() {
-        assertNull(requestParamParser.getUrl(request));
+        when(request.getPathInfo())
+                .thenReturn("/");
+        RequestedUrl url = requestParamParser.getUrl(request);
+        assertNull(url);
     }
 
     @Test
     public void param() {
-        when(request.getParameter("url"))
-                .thenReturn(TEST_URL);
+        when(request.getPathInfo())
+                .thenReturn("/test_site/test");
+        when(request.getQueryString())
+                .thenReturn("param1=1&param2=abc");
 
-        assertEquals(TEST_URL, requestParamParser.getUrl(request));
+        RequestedUrl url = requestParamParser.getUrl(request);
+        assertEquals("http://test_site/test?param1=1&param2=abc", url.getUrl());
+        assertSame(request, url.getRequest());
+        assertFalse(url.isCookiesOn());
     }
 
 }

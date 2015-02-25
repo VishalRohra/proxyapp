@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
  * @author Vitaliy Mayorov
  */
 public class RequestParamParser {
-    private static final String URL_PARAM = "url";
     final static UrlDecoder URL_DECODER = new UrlDecoder();
 
     public RequestedUrl getUrl(HttpServletRequest request) {
@@ -24,7 +23,7 @@ public class RequestParamParser {
 
         String url = URL_DECODER.decode(reqUrl);
 
-        if (url == null || url.isEmpty()) {
+        if (url == null || url.isEmpty() || url.equals("/")) {
             //todo parse path
         } else {
             requestedUrl = new RequestedUrl(url, reqUrl.contains(CookiesHandler.COOKIES_ON_PARAM), request);

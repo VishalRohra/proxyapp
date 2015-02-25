@@ -1,6 +1,6 @@
 package ru.codeninja.proxyapp.request;
 
-import ru.codeninja.proxyapp.cookies.CookiesHandler;
+import ru.codeninja.proxyapp.header.CookieProtector;
 import ru.codeninja.proxyapp.url.UrlDecoder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +26,7 @@ public class RequestParamParser {
         if (url == null || url.isEmpty() || url.equals("/")) {
             //todo parse path
         } else {
-            requestedUrl = new RequestedUrl(url, reqUrl.contains(CookiesHandler.COOKIES_ON_PARAM), request);
+            requestedUrl = new RequestedUrl(url, reqUrl.contains(CookieProtector.COOKIES_ON_PARAM), request);
         }
 
         return requestedUrl;

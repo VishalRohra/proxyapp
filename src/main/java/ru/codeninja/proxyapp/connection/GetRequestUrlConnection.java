@@ -1,6 +1,7 @@
 package ru.codeninja.proxyapp.connection;
 
 import ru.codeninja.proxyapp.cookies.CookiesHandler;
+import ru.codeninja.proxyapp.header.RequestHeadersManager;
 import ru.codeninja.proxyapp.request.RequestedUrl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,11 +9,19 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by vital on 11.02.15.
  */
-public class GetRequestUrlConnection extends AbstractUrlConnection implements UrlConnection {
+public class GetRequestUrlConnection implements UrlConnection {
+    final Logger l = Logger.getLogger(this.getClass().getName());
+
+    RequestHeadersManager requestHeadersManager;
+
+    public GetRequestUrlConnection(RequestHeadersManager requestHeadersManager) {
+        this.requestHeadersManager = requestHeadersManager;
+    }
 
     @Override
     public ProxyConnection connect(RequestedUrl url) {
@@ -24,7 +33,7 @@ public class GetRequestUrlConnection extends AbstractUrlConnection implements Ur
 
             conn.setRequestMethod(HttpMethod.GET.getName());
 
-            setBasicHeaders(request, conn);
+            requestHeadersManager.setBasicHeaders(request, conn);
 
             proxyConnection = new ProxyConnection(conn, request.getParameter(CookiesHandler.COOKIES_ON_PARAM) != null);
 

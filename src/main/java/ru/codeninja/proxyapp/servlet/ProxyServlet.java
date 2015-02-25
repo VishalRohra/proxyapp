@@ -8,7 +8,7 @@ import ru.codeninja.proxyapp.cookies.CookiesHandler;
 import ru.codeninja.proxyapp.cookies.CookiesHandlerFactory;
 import ru.codeninja.proxyapp.request.RequestParamParser;
 import ru.codeninja.proxyapp.request.RequestedUrl;
-import ru.codeninja.proxyapp.response.ResponseHeadersMapper;
+import ru.codeninja.proxyapp.header.ResponseHeadersManager;
 import ru.codeninja.proxyapp.response.ResponseWriterFactory;
 import ru.codeninja.proxyapp.response.writer.ResponseWriter;
 
@@ -29,7 +29,7 @@ public class ProxyServlet extends HttpServlet {
 
     UrlConnectionFactory urlConnectionFactory;
     RequestParamParser requestParamParser;
-    ResponseHeadersMapper responseHeadersMapper;
+    ResponseHeadersManager responseHeadersManager;
     ResponseWriterFactory responseWriterFactory;
     CookiesHandlerFactory cookiesHandlerFactory;
 
@@ -39,7 +39,7 @@ public class ProxyServlet extends HttpServlet {
 
         urlConnectionFactory = new UrlConnectionFactory();
         requestParamParser = new RequestParamParser();
-        responseHeadersMapper = new ResponseHeadersMapper();
+        responseHeadersManager = new ResponseHeadersManager();
         responseWriterFactory = new ResponseWriterFactory();
         cookiesHandlerFactory = new CookiesHandlerFactory();
     }
@@ -65,8 +65,9 @@ public class ProxyServlet extends HttpServlet {
         } else {
             CookiesHandler cookiesHandler = cookiesHandlerFactory.getRule(req);
             cookiesHandler.sendCookies(req, connection);
-            responseHeadersMapper.setHeaders(resp, connection);
+            responseHeadersManager.setHeaders(resp, connection);
             cookiesHandler.receiveCookies(resp, connection);
+            //todo implement the header manager
 
             ResponseWriter responseWriter = responseWriterFactory.get(connection);
             responseWriter.sendResponse(connection, resp);

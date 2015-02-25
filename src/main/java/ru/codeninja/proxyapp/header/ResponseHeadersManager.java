@@ -1,4 +1,4 @@
-package ru.codeninja.proxyapp.response;
+package ru.codeninja.proxyapp.header;
 
 import ru.codeninja.proxyapp.connection.ProxyConnection;
 import ru.codeninja.proxyapp.url.CurrentUrl;
@@ -11,7 +11,7 @@ import java.io.IOException;
  *
  * @author Vitaliy Mayorov
  */
-public class ResponseHeadersMapper {
+public class ResponseHeadersManager {
     public static final String CSP_POLICY = "default-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self' data:;";
     private static String[] acceptedHeaders = {"content-type", "expires", "last-modified"};
 

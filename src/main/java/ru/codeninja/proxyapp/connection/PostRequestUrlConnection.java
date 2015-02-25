@@ -1,6 +1,7 @@
 package ru.codeninja.proxyapp.connection;
 
 import ru.codeninja.proxyapp.cookies.CookiesHandler;
+import ru.codeninja.proxyapp.header.RequestHeadersManager;
 import ru.codeninja.proxyapp.request.RequestedUrl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,11 +14,19 @@ import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by vital on 11.02.15.
  */
-public class PostRequestUrlConnection extends AbstractUrlConnection implements UrlConnection {
+public class PostRequestUrlConnection implements UrlConnection {
+    final Logger l = Logger.getLogger(this.getClass().getName());
+
+    RequestHeadersManager requestHeadersManager;
+
+    public PostRequestUrlConnection(RequestHeadersManager requestHeadersManager) {
+        this.requestHeadersManager = requestHeadersManager;
+    }
 
     @Override
     public ProxyConnection connect(RequestedUrl url) {
@@ -49,7 +58,7 @@ public class PostRequestUrlConnection extends AbstractUrlConnection implements U
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setRequestProperty("Content-Length", String.valueOf(postData.length()));
 
-            setBasicHeaders(request, conn);
+            requestHeadersManager.setBasicHeaders(request, conn);
 
             OutputStream os = conn.getOutputStream();
             if (rawData.length() > 0) {

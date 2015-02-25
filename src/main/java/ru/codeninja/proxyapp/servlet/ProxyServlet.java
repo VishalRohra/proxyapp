@@ -54,16 +54,19 @@ public class ProxyServlet extends HttpServlet {
 
     private void processRequest(UrlConnection urlConnection, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         RequestedUrl url = requestParamParser.getUrl(req);
-
-        ProxyConnection connection = urlConnection.connect(url);
-        if (connection == null) {
-            //todo implement an error page
+        if (url == null) {
+            //todo we're in the root
         } else {
-            responseHeadersManager.sendHeaders(resp, connection);
-            //todo implement the header manager
+            ProxyConnection connection = urlConnection.connect(url);
+            if (connection == null) {
+                //todo implement an error page
+            } else {
+                responseHeadersManager.sendHeaders(resp, connection);
+                //todo implement the header manager
 
-            ResponseWriter responseWriter = responseWriterFactory.get(connection);
-            responseWriter.sendResponse(connection, resp);
+                ResponseWriter responseWriter = responseWriterFactory.get(connection);
+                responseWriter.sendResponse(connection, resp);
+            }
         }
     }
 

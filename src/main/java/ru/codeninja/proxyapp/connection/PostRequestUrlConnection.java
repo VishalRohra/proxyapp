@@ -48,7 +48,7 @@ public class PostRequestUrlConnection implements UrlConnection {
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setRequestProperty("Content-Length", String.valueOf(rawData.length()));
 
-            proxyConnection = new ProxyConnection(conn, request.getParameter(CookiesProtector.COOKIES_ON_PARAM) != null);
+            proxyConnection = new ProxyConnection(conn, url.isCookiesOn());
 
             requestHeadersManager.sendHeaders(request, proxyConnection);
 

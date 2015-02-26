@@ -29,6 +29,7 @@ public class GetRequestUrlConnection implements UrlConnection {
             HttpServletRequest request = url.getRequest();
             URL urlAddress = new URL(url.getUrl());
             HttpURLConnection conn = (HttpURLConnection) urlAddress.openConnection();
+            conn.setInstanceFollowRedirects(false);
 
             conn.setRequestMethod(HttpMethod.GET.getName());
 

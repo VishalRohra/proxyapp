@@ -41,6 +41,7 @@ public class PostRequestUrlConnection implements UrlConnection {
 
             URL urlAddress = new URL(url.getUrl());
             HttpURLConnection conn = (HttpURLConnection) urlAddress.openConnection();
+            conn.setInstanceFollowRedirects(false);
 
             conn.setDoOutput(true);
             conn.setRequestMethod(HttpMethod.POST.getName());

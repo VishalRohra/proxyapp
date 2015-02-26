@@ -45,8 +45,8 @@ public class ResponseHeadersManager {
     }
 
     private void receiveCookies(HttpServletResponse response, ProxyConnection cookiesSource) {
-        Map<String, List<String>> requestProperties = cookiesSource.conn.getHeaderFields();
-        List<String> cookies = requestProperties.get(SET_COOKIE_HTTP_HEADER);
+        Map<String, List<String>> proxyResponseHeaders = cookiesSource.conn.getHeaderFields();
+        List<String> cookies = proxyResponseHeaders.get(SET_COOKIE_HTTP_HEADER.toLowerCase());
         if (cookies != null) {
             for (String cookie : cookies) {
                 response.addHeader(SET_COOKIE_HTTP_HEADER, Cookies.neutralize(cookiesSource.getCurrentUrl(), cookie));

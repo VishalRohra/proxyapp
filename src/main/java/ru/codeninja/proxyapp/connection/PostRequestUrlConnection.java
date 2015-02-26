@@ -1,6 +1,5 @@
 package ru.codeninja.proxyapp.connection;
 
-import ru.codeninja.proxyapp.header.CookiesProtector;
 import ru.codeninja.proxyapp.header.RequestHeadersManager;
 import ru.codeninja.proxyapp.request.RequestedUrl;
 

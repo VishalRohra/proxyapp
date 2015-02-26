@@ -1,6 +1,6 @@
 package ru.codeninja.proxyapp.url;
 
-import ru.codeninja.proxyapp.header.CookiesProtector;
+import ru.codeninja.proxyapp.header.Cookies;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,8 +16,8 @@ public class UrlDecoder {
     public String decode(String url) {
         String result = null;
 
-        url = url.replace('?' + CookiesProtector.COOKIES_ON_PARAM, "");
-        url = url.replace('&' + CookiesProtector.COOKIES_ON_PARAM, "");
+        url = url.replace('?' + Cookies.COOKIES_ON_PARAM, "");
+        url = url.replace('&' + Cookies.COOKIES_ON_PARAM, "");
 
         if (url.equals("/") || url.isEmpty()) {
             result = url;

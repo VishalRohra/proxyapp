@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by vital on 16.02.15.
  */
-public class CookiesProtector {
+public class Cookies {
     public static final String COOKIES_ON_PARAM = "__cookies";
 
     public static String neutralize(CurrentUrl currentUrl, String setCookieHeader) {

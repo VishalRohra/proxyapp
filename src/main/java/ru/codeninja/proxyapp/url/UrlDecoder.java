@@ -10,6 +10,7 @@ import java.util.logging.Logger;
  *
  * @author Vitaliy Mayorov
  */
+@Deprecated
 public class UrlDecoder {
     private final Logger l = Logger.getLogger(this.getClass().getName());
 

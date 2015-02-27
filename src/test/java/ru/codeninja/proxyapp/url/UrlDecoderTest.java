@@ -33,5 +33,8 @@ public class UrlDecoderTest {
         assertEquals(urlDecoder.decode("/s/google.com/test?__cookies"), "https://google.com/test");
         assertEquals(urlDecoder.decode("/google.com/?__cookies"), "http://google.com/");
         assertEquals(urlDecoder.decode("/google.com?__cookies"), "http://google.com");
+        assertEquals(urlDecoder.decode("/c/google.com/test"), "http://google.com/test");
+        assertEquals(urlDecoder.decode("/cs/google.com/test"), "https://google.com/test");
+        assertEquals(urlDecoder.decode("/sc/google.com/test"), "https://google.com/test");
     }
 }

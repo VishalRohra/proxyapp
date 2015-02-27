@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Vitaliy Mayorov
  */
+@Deprecated
 public class RequestParamParser {
     final static UrlDecoder URL_DECODER = new UrlDecoder();
 

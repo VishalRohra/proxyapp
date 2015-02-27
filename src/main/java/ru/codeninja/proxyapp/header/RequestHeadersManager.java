@@ -10,7 +10,7 @@ import java.net.HttpURLConnection;
  */
 public class RequestHeadersManager {
     static final String HTTP_HEADER_USER_AGENT = "User-Agent";
-    static final String USER_AGENT = "Mozilla/5.0";
+    static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/600.3.18 (KHTML, like Gecko) Version/8.0.3 Safari/600.3.18";
     static final String COOKIE_HTTP_HEADER = "Cookie";
 
     static String[] acceptedHeaders = {"Accept-Language", "Accept", "Accept-Encoding"};

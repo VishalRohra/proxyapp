@@ -12,6 +12,5 @@ Pros:
 
 
 TODO:
- * ajax support
  * web form
  * block common spy js (like google analytic)

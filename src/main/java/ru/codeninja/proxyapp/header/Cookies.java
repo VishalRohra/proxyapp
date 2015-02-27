@@ -29,7 +29,6 @@ public class Cookies {
                 } else {
                     newCookie.setPath(currentUrl.encodeUrl("/"));
                 }
-                newCookie.setHttpOnly(true);
 
                 result.append(newCookie);
 

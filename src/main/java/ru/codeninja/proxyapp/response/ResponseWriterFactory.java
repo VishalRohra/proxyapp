@@ -15,11 +15,11 @@ public class ResponseWriterFactory {
     public ResponseWriter get(ProxyConnection connection) {
         String contentType = connection.conn.getContentType();
 
-        if (contentType.contains("text/html")) {
+        if (contentType != null && contentType.contains("text/html")) {
             return HTML_RESPONSE_WRITER;
-        } else if (contentType.contains("text/css")) {
+        } else if (contentType != null && contentType.contains("text/css")) {
             return CSS_RESPONSE_WRITER;
-        } else if (contentType.contains("application/x-javascript")) {
+        } else if (contentType != null && contentType.contains("application/x-javascript")) {
             return JAVASCRIPT_RESPONSE_WRITER;
         } else {
             return BINARY_RESPONSE_WRITER;

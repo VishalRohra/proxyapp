@@ -33,7 +33,7 @@ public class GetRequestUrlConnection implements UrlConnection {
 
             conn.setRequestMethod(HttpMethod.GET.getName());
 
-            proxyConnection = new ProxyConnection(conn, url.isCookiesOn());
+            proxyConnection = new ProxyConnection(conn, url.isCookiesMode());
 
             requestHeadersManager.sendHeaders(request, proxyConnection);
 

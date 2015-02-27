@@ -25,8 +25,8 @@ public class RequestedUrlTest {
         {
             RequestedUrl url = RequestedUrl.parse(mockRequest("/s/google.com/test"));
             assertEquals(url.getUrl(), "https://google.com/test");
-            assertTrue(url.isHttps());
-            assertFalse(url.isCookiesOn());
+            assertTrue(url.isSslMode());
+            assertFalse(url.isCookiesMode());
         }
         assertEquals(RequestedUrl.parse(mockRequest("/google.com/test", "q=abc123")).getUrl(), "http://google.com/test?q=abc123");
         assertEquals(RequestedUrl.parse(mockRequest("/s/google.com/test", "q=abc123")).getUrl(), "https://google.com/test?q=abc123");
@@ -37,14 +37,14 @@ public class RequestedUrlTest {
         assertNull(RequestedUrl.parse(mockRequest("")));
         {
             RequestedUrl url = RequestedUrl.parse(mockRequest("/c/google.com/test"));
-            assertFalse(url.isHttps());
-            assertTrue(url.isCookiesOn());
+            assertFalse(url.isSslMode());
+            assertTrue(url.isCookiesMode());
             assertEquals(url.getUrl(), "http://google.com/test");
         }
         {
             RequestedUrl url = RequestedUrl.parse(mockRequest("/cs/google.com/test"));
-            assertTrue(url.isHttps());
-            assertTrue(url.isCookiesOn());
+            assertTrue(url.isSslMode());
+            assertTrue(url.isCookiesMode());
             assertEquals(url.getUrl(), "https://google.com/test");
         }
         assertEquals(RequestedUrl.parse(mockRequest("/sc/google.com/test")).getUrl(), "https://google.com/test");

@@ -14,8 +14,8 @@ public class RequestedUrl {
     static final Pattern SETTINGS_PATTERN = Pattern.compile("^/([scr]{1,3})/(.*)");
 
     String url;
-    boolean isCookiesOn = false;
-    boolean isHttps = false;
+    boolean isCookiesMode = false;
+    boolean isSslMode = false;
     HttpServletRequest request;
 
     private String decode() {
@@ -36,8 +36,8 @@ public class RequestedUrl {
             String protocol = params.contains("s") ? "https://" : "http://";
 
             result = protocol + path;
-            isCookiesOn = params.contains("c");
-            isHttps = params.contains("s");
+            isCookiesMode = params.contains("c");
+            isSslMode = params.contains("s");
         } else if (url.startsWith("/")) {
             result = url.replaceFirst("/", "http://");
         } else {
@@ -50,9 +50,9 @@ public class RequestedUrl {
     }
 
     @Deprecated
-    public RequestedUrl(String url, boolean isCookiesOn, HttpServletRequest request) {
+    public RequestedUrl(String url, boolean isCookiesMode, HttpServletRequest request) {
         this.url = url;
-        this.isCookiesOn = isCookiesOn;
+        this.isCookiesMode = isCookiesMode;
         this.request = request;
     }
 
@@ -76,15 +76,15 @@ public class RequestedUrl {
         return url;
     }
 
-    public boolean isCookiesOn() {
-        return isCookiesOn;
+    public boolean isCookiesMode() {
+        return isCookiesMode;
     }
 
     public HttpServletRequest getRequest() {
         return request;
     }
 
-    public boolean isHttps() {
-        return isHttps;
+    public boolean isSslMode() {
+        return isSslMode;
     }
 }

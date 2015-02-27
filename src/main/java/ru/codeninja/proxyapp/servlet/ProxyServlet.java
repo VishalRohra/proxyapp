@@ -5,7 +5,6 @@ import ru.codeninja.proxyapp.connection.ProxyConnection;
 import ru.codeninja.proxyapp.connection.UrlConnection;
 import ru.codeninja.proxyapp.connection.UrlConnectionFactory;
 import ru.codeninja.proxyapp.header.ResponseHeadersManager;
-import ru.codeninja.proxyapp.request.RequestParamParser;
 import ru.codeninja.proxyapp.request.RequestedUrl;
 import ru.codeninja.proxyapp.response.ResponseWriterFactory;
 import ru.codeninja.proxyapp.response.writer.ResponseWriter;
@@ -26,7 +25,6 @@ public class ProxyServlet extends HttpServlet {
     final Logger l = Logger.getLogger(this.getClass().getName());
 
     UrlConnectionFactory urlConnectionFactory;
-    RequestParamParser requestParamParser;
     ResponseHeadersManager responseHeadersManager;
     ResponseWriterFactory responseWriterFactory;
 
@@ -35,7 +33,6 @@ public class ProxyServlet extends HttpServlet {
         super.init();
 
         urlConnectionFactory = new UrlConnectionFactory();
-        requestParamParser = new RequestParamParser();
         responseHeadersManager = new ResponseHeadersManager();
         responseWriterFactory = new ResponseWriterFactory();
     }
@@ -53,7 +50,8 @@ public class ProxyServlet extends HttpServlet {
     }
 
     private void processRequest(UrlConnection urlConnection, HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        RequestedUrl url = requestParamParser.getUrl(req);
+        RequestedUrl url = RequestedUrl.parse(req);
+
         if (url == null) {
             //todo we're in the root
             l.info("root page");

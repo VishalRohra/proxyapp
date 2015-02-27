@@ -67,6 +67,7 @@ public class ProxyServlet extends HttpServlet {
                 }
             } else {
                 // it's a spy url, let's do something
+                resp.setStatus(200);
             }
         }
     }

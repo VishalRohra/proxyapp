@@ -1,9 +1,6 @@
 package ru.codeninja.proxyapp.servlet;
 
-import ru.codeninja.proxyapp.connection.HttpMethod;
-import ru.codeninja.proxyapp.connection.ProxyConnection;
-import ru.codeninja.proxyapp.connection.UrlConnection;
-import ru.codeninja.proxyapp.connection.UrlConnectionFactory;
+import ru.codeninja.proxyapp.connection.*;
 import ru.codeninja.proxyapp.header.ResponseHeadersManager;
 import ru.codeninja.proxyapp.request.RequestedUrl;
 import ru.codeninja.proxyapp.response.ResponseWriterFactory;
@@ -56,16 +53,20 @@ public class ProxyServlet extends HttpServlet {
             //todo we're in the root
             l.info("root page");
         } else {
-            ProxyConnection connection = urlConnection.connect(url);
-            if (connection == null) {
-                //todo implement an error page
-                l.warning("cannot connect an url");
-            } else {
-                responseHeadersManager.sendHeaders(resp, connection);
-                //todo implement the header manager
+            if (SpyJsProtector.isSafe(url.getUrl())) {
+                ProxyConnection connection = urlConnection.connect(url);
+                if (connection == null) {
+                    //todo implement an error page
+                    l.warning("cannot connect an url");
+                } else {
+                    responseHeadersManager.sendHeaders(resp, connection);
+                    //todo implement the header manager
 
-                ResponseWriter responseWriter = responseWriterFactory.get(connection);
-                responseWriter.sendResponse(connection, resp);
+                    ResponseWriter responseWriter = responseWriterFactory.get(connection);
+                    responseWriter.sendResponse(connection, resp);
+                }
+            } else {
+                // it's a spy url, let's do something
             }
         }
     }

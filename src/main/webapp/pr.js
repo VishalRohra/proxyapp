@@ -55,6 +55,7 @@
     var baseUrl = base_url(path);
 
     function safe_url(url) {
+        url = url.replace(window.location.origin, "");
 
         if (url.indexOf("http://") === 0) {
             return url.replace("http://", "/");
@@ -75,7 +76,7 @@
             || url.indexOf(baseHost) === 0 || url.indexOf("data:image") === 0
             || url.indexOf("about:blank") === 0 || url.indexOf("#") === 0
             || url.match(/^\/[\w\.\:\@\-]{3,}\.[\w]{2,5}(:[0-9]+)?/g)
-            || url.indexOf(window.location.origin) === 0;
+            || url.indexOf(window.location.origin + baseHost) === 0;
     }
 
     function $url(url) {

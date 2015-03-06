@@ -49,13 +49,6 @@ public class RequestedUrl {
         return result;
     }
 
-    @Deprecated
-    public RequestedUrl(String url, boolean isCookiesMode, HttpServletRequest request) {
-        this.url = url;
-        this.isCookiesMode = isCookiesMode;
-        this.request = request;
-    }
-
     public static RequestedUrl parse(HttpServletRequest request) {
         RequestedUrl url = new RequestedUrl(request);
 

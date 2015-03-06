@@ -1,7 +1,5 @@
 package ru.codeninja.proxyapp.url;
 
-import ru.codeninja.proxyapp.header.Cookies;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
@@ -14,10 +12,10 @@ import java.util.logging.Logger;
  */
 public class CurrentUrl {
     private final Logger l = Logger.getLogger(this.getClass().getName());
-    private URI currentUrl;
     private String baseUrl;
     private String baseHostUrl;
     private boolean hasCookies = false;
+    private String currentUrl;
 
     public CurrentUrl(String currentUrl) {
         this(currentUrl, false);
@@ -25,27 +23,28 @@ public class CurrentUrl {
 
     public CurrentUrl(String currentUrl, boolean isCookiesOn) {
         hasCookies = isCookiesOn;
+        this.currentUrl = currentUrl;
 
+        makeBaseUrl(currentUrl);
+    }
+
+    private void makeBaseUrl(String curUrl) {
         try {
-            this.currentUrl = new URI(currentUrl);
+            URI currentUrl = new URI(curUrl);
+
+            String parentPath = currentUrl.getPath();
+
+            if (!parentPath.endsWith("/")) {
+                parentPath = currentUrl.resolve(".").getPath();
+            }
+
+            baseUrl = currentUrl.getAuthority()
+                    + parentPath;
+            baseHostUrl = currentUrl.getAuthority() + '/';
+
         } catch (URISyntaxException e) {
             l.log(Level.WARNING, "cannot parse current url", e);
         }
-
-        makeBaseUrl(this.currentUrl);
-    }
-
-    private void makeBaseUrl(URI currentUrl) {
-        String parentPath = currentUrl.getPath();
-
-        if (!parentPath.endsWith("/")) {
-            parentPath = currentUrl.resolve(".").getPath();
-        }
-
-        baseUrl = '/' + currentUrl.getAuthority()
-                + parentPath;
-        baseHostUrl = '/' + currentUrl.getAuthority() + '/';
-
     }
 
     private String decodeSpecialChars(String url) {
@@ -55,22 +54,23 @@ public class CurrentUrl {
                 .replaceFirst("%3A", ":");
     }
 
-    private String addCookiesParam(String url) {
-        String result = url;
-        if (hasCookies && url.contains(baseHostUrl)) {
-            StringBuffer buff = new StringBuffer(url);
-            if (url.contains("?")) {
-                buff.append("&");
-                buff.append(Cookies.COOKIES_ON_PARAM);
-            } else {
-                buff.append("?");
-                buff.append(Cookies.COOKIES_ON_PARAM);
-            }
+    private String options(String url, boolean hasCookies) {
+        boolean isSslMode = url.startsWith("https://");
 
-            result = buff.toString();
+        StringBuffer options = new StringBuffer("/");
+        if (isSslMode) {
+            options.append('s');
         }
 
-        return result;
+        if (hasCookies && (url.contains(baseHostUrl) || currentUrl.equals("/"))) {
+            options.append('c');
+        }
+
+        if (options.length() > 1) {
+            options.append('/');
+        }
+
+        return options.toString();
     }
 
     public String encodeUrl(String url) {
@@ -79,20 +79,20 @@ public class CurrentUrl {
         url = decodeSpecialChars(url);
 
         if (url.startsWith("http://")) {
-            result = '/' + url.replaceFirst("http://", "");
+            result = options(url, hasCookies) + url.replaceFirst("http://", "");
         } else if (url.startsWith("//")) {
-            result = '/' + url.replaceFirst("//", "");
+            result = options(url, hasCookies) + url.replaceFirst("//", "");
         } else if (url.startsWith("https://")) {
-            result = "/s/" + url.replaceFirst("https://", "");
+            result = options(url, hasCookies) + url.replaceFirst("https://", "");
         } else if (url.startsWith("data:image")) {
             result = url;
         } else if (url.startsWith("/")) {
-            result = baseHostUrl + url.replaceFirst("/", "");
+            result = options(currentUrl, hasCookies) + baseHostUrl + url.replaceFirst("/", "");
         } else {
-            result = baseUrl + url;
+            result = options(currentUrl, hasCookies) + baseUrl + url;
         }
 
         //todo url escaping
-        return addCookiesParam(result);
+        return result;
     }
 }

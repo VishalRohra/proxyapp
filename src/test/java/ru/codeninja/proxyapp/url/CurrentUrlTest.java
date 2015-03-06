@@ -47,10 +47,20 @@ public class CurrentUrlTest {
         assertEquals("/s/google.com:8080/test?q=abc123&test1=123abc", currentUrl.encodeUrl("https://google.com:8080/test?q=abc123&test1=123abc"));
         assertEquals("data:image/gif;base64,R0lGODlhDgAOAJEAAPDw8IyMjP///wAAACH5BAEAAAIALAAAAAAOAA4AQAIUVI55pu0Pozyg2jqz3u9evjGRUAAAOw==", currentUrl.encodeUrl("data:image/gif;base64,R0lGODlhDgAOAJEAAPDw8IyMjP///wAAACH5BAEAAAIALAAAAAAOAA4AQAIUVI55pu0Pozyg2jqz3u9evjGRUAAAOw=="));
 
-        assertEquals("/some_site.com/test/img/bg.png?__cookies", currentUrl.encodeUrl("img/bg.png"));
-        assertEquals("/some_site.com/img/bg.png?__cookies", currentUrl.encodeUrl("/img/bg.png"));
-        assertEquals("/some_site.com/test?__cookies", currentUrl.encodeUrl("http://some_site.com/test"));
-        assertEquals("/s/some_site.com/test?__cookies", currentUrl.encodeUrl("https://some_site.com/test"));
-        assertEquals("/some_site.com/?__cookies", currentUrl.encodeUrl("/"));
+        assertEquals("/c/some_site.com/test/img/bg.png", currentUrl.encodeUrl("img/bg.png"));
+        assertEquals("/c/some_site.com/img/bg.png", currentUrl.encodeUrl("/img/bg.png"));
+        assertEquals("/c/some_site.com/test", currentUrl.encodeUrl("http://some_site.com/test"));
+        assertEquals("/sc/some_site.com/test", currentUrl.encodeUrl("https://some_site.com/test"));
+        assertEquals("/c/some_site.com/", currentUrl.encodeUrl("/"));
+    }
+
+    @Test
+    public void root() {
+        currentUrl = new CurrentUrl("/", true);
+        assertEquals("/c/google.com", currentUrl.encodeUrl("http://google.com"));
+
+        currentUrl = new CurrentUrl("/", false);
+        assertEquals("/google.com", currentUrl.encodeUrl("http://google.com"));
+
     }
 }

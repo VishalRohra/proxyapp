@@ -21,7 +21,8 @@ public class Redirect {
     }
 
     public void to(String toUrl) {
-        response.setHeader("Location", currentUrl.encodeUrl(toUrl));
+        String redirectUrl = currentUrl.encodeUrl(toUrl);
+        response.setHeader("Location", redirectUrl);
         response.setStatus(301);
     }
 

@@ -50,8 +50,8 @@ public class ProxyServlet extends HttpServlet {
         RequestedUrl url = RequestedUrl.parse(req);
 
         if (url == null) {
-            //todo we're in the root
             l.info("root page");
+            StaticContent.ROOT.doRequest(req, resp);
         } else {
             if (SpyJsProtector.isSafe(url.getUrl())) {
                 ProxyConnection connection = urlConnection.connect(url);

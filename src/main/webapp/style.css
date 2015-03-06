@@ -1,0 +1,9 @@
+body {
+    background: #ccc;
+    color: #444;
+}
+
+#wrap {
+    width: 960px;
+    margin: 0 auto;
+}

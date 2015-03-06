@@ -10,5 +10,7 @@
     <static-files>
         <include path="/favicon.ico"/>
         <include path="/pr.js"/>
+        <include path="/style.css"/>
+        <include path="/"/>
     </static-files>
 </appengine-web-app>

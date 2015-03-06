@@ -1,10 +1,12 @@
 package ru.codeninja.proxyapp.servlet;
 
 import ru.codeninja.proxyapp.connection.*;
+import ru.codeninja.proxyapp.header.Redirect;
 import ru.codeninja.proxyapp.header.ResponseHeadersManager;
 import ru.codeninja.proxyapp.request.RequestedUrl;
 import ru.codeninja.proxyapp.response.ResponseWriterFactory;
 import ru.codeninja.proxyapp.response.writer.ResponseWriter;
+import ru.codeninja.proxyapp.url.CurrentUrl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -51,7 +53,12 @@ public class ProxyServlet extends HttpServlet {
 
         if (url == null) {
             l.info("root page");
-            StaticContent.ROOT.doRequest(req, resp);
+            if (req.getParameter("url") != null) {
+                CurrentUrl currentUrl = new CurrentUrl("/", req.getParameter("cookiesMode") != null);
+                Redirect.location(currentUrl, resp).to(req.getParameter("url"));
+            } else {
+                StaticContent.ROOT.doRequest(req, resp);
+            }
         } else {
             if (SpyJsProtector.isSafe(url.getUrl())) {
                 ProxyConnection connection = urlConnection.connect(url);

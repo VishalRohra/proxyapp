@@ -1,7 +1,6 @@
 package ru.codeninja.proxyapp.header;
 
 import ru.codeninja.proxyapp.connection.ProxyConnection;
-import ru.codeninja.proxyapp.url.CurrentUrl;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -35,8 +34,8 @@ public class ResponseHeadersManager {
 
         String redirectLocation = headerSource.conn.getHeaderField("location");
         if (redirectLocation != null) {
-            CurrentUrl currentUrl = headerSource.getCurrentUrl();
-            response.setHeader("Location", currentUrl.encodeUrl(redirectLocation));
+            Redirect.location(headerSource.getCurrentUrl(), response)
+                    .to(redirectLocation);
         }
 
         if (headerSource.isCookiesOn) {

@@ -25,9 +25,6 @@ public class StaticContent {
     }
 
     public void doRequest(HttpServletRequest req, HttpServletResponse resp) {
-        File file = new File(filePath);
-
-
         try {
             FileInputStream in = new FileInputStream(new File(filePath));
             FileChannel inChannel = in.getChannel();

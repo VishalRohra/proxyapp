@@ -110,7 +110,8 @@
             <plugin>
                 <groupId>com.google.appengine</groupId>
                 <artifactId>appengine-maven-plugin</artifactId>
-                <version>1.9.3-maven3.0</version> <!-- this works with debian's maven (3.0.5) -->
+                <!--version>1.9.3-maven3.0</version--> <!-- this works with debian's maven (3.0.5) -->
+                <version>1.9.17</version>
                 <configuration>
                     <enableJarClasses>false</enableJarClasses>
                     <!-- Comment in the below snippet to bind to all IPs instead of just localhost -->

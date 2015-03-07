@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 /**
  * Created: 22.01.15 20:47
@@ -21,6 +22,7 @@ import java.util.logging.Logger;
  * @author Vitaliy Mayorov
  */
 public class ProxyServlet extends HttpServlet {
+    static final Pattern URL_PATTERN = Pattern.compile("^(https?:\\/\\/)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([\\/\\w \\.-]*)*\\/?$");
     final Logger l = Logger.getLogger(this.getClass().getName());
 
     UrlConnectionFactory urlConnectionFactory;
@@ -53,9 +55,10 @@ public class ProxyServlet extends HttpServlet {
 
         if (url == null) {
             l.info("root page");
-            if (req.getParameter("url") != null) {
+            String urlParam = req.getParameter("url");
+            if (urlParam != null && URL_PATTERN.matcher(urlParam).matches()) {
                 CurrentUrl currentUrl = new CurrentUrl("/", req.getParameter("cookiesMode") != null);
-                Redirect.location(currentUrl, resp).to(req.getParameter("url"));
+                Redirect.location(currentUrl, resp).to(urlParam);
             } else {
                 StaticContent.ROOT.doRequest(req, resp);
             }

@@ -10,6 +10,9 @@
     <static-files>
         <include path="/favicon.ico"/>
         <include path="/pr.js"/>
-        <include path="/style.css"/>
+        <include path="/robots.txt"/>
+        <include path="/css/main.css"/>
+        <include path="/css/normalize.min.css"/>
+        <include path="/js/main.js"/>
     </static-files>
 </appengine-web-app>

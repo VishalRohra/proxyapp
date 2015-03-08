@@ -62,6 +62,17 @@ textarea {
 
 
 
+body {
+    background: #ccc;
+    color: #444;
+    font-size: 14px;
+    font-family: arial;
+}
+
+.middle {
+    width: 960px;
+    margin: 0 auto;
+}
 
 
 

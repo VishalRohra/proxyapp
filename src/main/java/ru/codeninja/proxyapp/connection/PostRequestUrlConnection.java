@@ -4,9 +4,7 @@ import ru.codeninja.proxyapp.header.RequestHeadersManager;
 import ru.codeninja.proxyapp.request.RequestedUrl;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.logging.Level;
@@ -32,12 +30,6 @@ public class PostRequestUrlConnection implements UrlConnection {
             HttpServletRequest request = url.getRequest();
 
             BufferedReader reader = request.getReader();
-            StringBuffer rawData = new StringBuffer();
-            char[] buff = new char[1024];
-            int count;
-            while ((count = reader.read(buff)) != -1) {
-                rawData.append(buff, 0, count);
-            }
 
             URL urlAddress = new URL(url.getUrl());
             HttpURLConnection conn = (HttpURLConnection) urlAddress.openConnection();
@@ -45,18 +37,20 @@ public class PostRequestUrlConnection implements UrlConnection {
 
             conn.setDoOutput(true);
             conn.setRequestMethod(HttpMethod.POST.getName());
-            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            conn.setRequestProperty("Content-Length", String.valueOf(rawData.length()));
+            conn.setRequestProperty("Content-Type", request.getContentType());
+            conn.setRequestProperty("Content-Length", Integer.valueOf(request.getContentLength()).toString());
 
             proxyConnection = new ProxyConnection(conn, url.isCookiesMode());
 
             requestHeadersManager.sendHeaders(request, proxyConnection);
 
             OutputStream os = conn.getOutputStream();
-            if (rawData.length() > 0) {
-                os.write(rawData.toString().getBytes());
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+            char[] buff = new char[1024];
+            int count;
+            while ((count = reader.read(buff)) != -1) {
+                writer.write(buff, 0, count);
             }
-
 
         } catch (IOException e) {
             l.log(Level.WARNING, e.getMessage(), e);

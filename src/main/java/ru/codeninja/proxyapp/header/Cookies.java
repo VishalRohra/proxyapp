@@ -30,6 +30,7 @@ public class Cookies {
                     newCookie.setPath(currentUrl.encodeUrl("/"));
                 }
 
+                cookie.setSecure(false);
                 result.append(newCookie);
 
                 if (iterator.hasNext()) {

@@ -63,9 +63,9 @@ textarea {
 
 
 body {
-    background: #ccc;
+    background: #efefef;
     color: #444;
-    font-size: 14px;
+    font-size: 16px;
     font-family: arial;
 }
 
@@ -74,6 +74,15 @@ body {
     margin: 0 auto;
 }
 
+#form {
+    margin: 150px 0;
+    border: 10px solid #fff;
+}
+
+input#url {
+    padding: 10px;
+    font-size: 18px;
+}
 
 
 

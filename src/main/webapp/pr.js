@@ -30,8 +30,8 @@
 
     function base_host(path) {
         parts = path.split("/");
-        if (parts[1] == "s") {
-            return "/s/" + parts[2];
+        if (/[sc]{1,2}/.test(parts[1])) {
+            return "/" + parts[1] + "/" + parts[2];
         } else {
             return "/" + parts[1];
         }

@@ -63,8 +63,8 @@ textarea {
 
 
 body {
-    background: #efefef;
-    color: #444;
+    background: #fff;
+    color: #555;
     font-size: 16px;
     font-family: arial;
 }
@@ -75,13 +75,23 @@ body {
 }
 
 #form {
-    margin: 150px 0;
+    margin: 150px 70px;
     border: 10px solid #fff;
 }
 
-input#url {
+input.control {
     padding: 10px;
-    font-size: 18px;
+    font-size: 20px;
+}
+  
+
+input#url {
+    width: 550px;
+}
+
+.option {
+    font-size: 14px;
+    color: #999;
 }
 
 

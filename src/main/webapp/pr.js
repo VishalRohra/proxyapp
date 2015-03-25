@@ -68,7 +68,6 @@
         } else {
             return baseUrl + url;
         }
-
     }
 
     function is_safe_url(url) {

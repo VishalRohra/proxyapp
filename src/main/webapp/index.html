@@ -15,9 +15,13 @@
         <div id="wrap" class="middle">
             <div id="form">
                 <form action="/" method="post">
-                    <input id="url" name="url" type="text" placeholder="http://google.com/">
+                  <div class="inputbar">
+                    <input id="url" class="control" name="url" type="text" placeholder="http://google.com/"/>
+                    <input id="goBtn" class="control" type="submit" value="Go"/>
+                  </div>
+                  <div class="option">
                     Cookies support: <input type="checkbox" id="cookiesMode" name="cookiesMode"/>
-                    <input type="submit" value="Go"/>
+                  </div>
                 </form>
             </div>
         </div>

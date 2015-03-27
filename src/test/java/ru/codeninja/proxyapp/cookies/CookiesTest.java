@@ -24,5 +24,6 @@ public class CookiesTest {
         assertEquals("name=\"Bananas\";$Path=\"/test.com/\"", Cookies.neutralize(PATH, "name=Bananas;"));
 
         assertEquals("a=\"b\";$Path=\"/test.com/\"", Cookies.neutralize(PATH, "a=b;Path=/;,c=d;Path=/;"));
+        assertEquals("name=\"Bananas\";$Path=\"/test.com/\"", Cookies.neutralize(new CurrentUrl("http://test.com/test"), "name=Bananas; expires=Sat, 02 May 2009 23:38:25 GMT"));
     }
 }
